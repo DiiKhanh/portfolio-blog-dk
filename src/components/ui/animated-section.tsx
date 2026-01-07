@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion, type Variants } from "framer-motion";
 import { useReducedMotion } from "framer-motion";
 
@@ -33,6 +34,20 @@ export function AnimatedSection({
     id,
 }: AnimatedSectionProps) {
     const shouldReduceMotion = useReducedMotion();
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    // Before hydration, render without animation styles to match server
+    if (!isMounted) {
+        return (
+            <section id={id} className={className}>
+                {children}
+            </section>
+        );
+    }
 
     return (
         <motion.section

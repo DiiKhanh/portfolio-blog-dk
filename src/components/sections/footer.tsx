@@ -28,7 +28,7 @@ export function Footer() {
                             DK.dev
                         </Link>
                         <p className="text-sm text-foreground-muted flex items-center gap-1 justify-center md:justify-start">
-                            Made with <Heart className="w-4 h-4 text-red-500 fill-current" /> by Khanh Nguyen
+                            Made with <Heart className="w-4 h-4 text-red-500 fill-current" /> by Khanh Pham
                         </p>
                         <p className="text-sm text-foreground-muted mt-1">
                             © {new Date().getFullYear()} All rights reserved.

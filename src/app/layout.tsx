@@ -22,12 +22,12 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Khanh Nguyen | Software Engineer",
+  title: "Khanh Pham | Software Engineer",
   description: "Portfolio of a passionate Software Engineer specializing in building exceptional digital experiences with modern web technologies.",
   keywords: ["Software Engineer", "Full Stack Developer", "React", "Next.js", "TypeScript", "Portfolio"],
-  authors: [{ name: "Khanh Nguyen" }],
+  authors: [{ name: "Khanh Pham" }],
   openGraph: {
-    title: "Khanh Nguyen | Software Engineer",
+    title: "Khanh Pham | Software Engineer",
     description: "Portfolio of a passionate Software Engineer",
     type: "website",
   },

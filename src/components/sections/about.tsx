@@ -37,7 +37,7 @@ export function About() {
                             </div>
                         </div>
                         <h3 className="font-heading text-2xl font-bold mb-2">
-                            Khanh Nguyen
+                            Khanh Pham
                         </h3>
                         <p className="text-foreground-muted mb-4">
                             Full Stack Developer

@@ -29,7 +29,7 @@ export function Hero() {
                     className="font-heading text-[clamp(2.5rem,8vw,6rem)] font-bold leading-[1.1] tracking-tight mb-6"
                 >
                     Hi, I&apos;m{" "}
-                    <span className="gradient-text-animate">Khanh Nguyen</span>
+                    <span className="gradient-text-animate">Khanh Pham</span>
                     <br />
                     <span className="text-foreground-muted">Software Engineer</span>
                 </motion.h1>

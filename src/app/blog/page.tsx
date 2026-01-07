@@ -4,7 +4,7 @@ import { getAllPosts } from "@/lib/blog";
 import { LevelBadge } from "@/components/blog";
 
 export const metadata = {
-    title: "Blog | Khanh Nguyen",
+    title: "Blog | Khanh Pham",
     description: "Tips, tutorials, and thoughts on software development",
 };
 

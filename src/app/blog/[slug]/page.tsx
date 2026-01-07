@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: PageProps) {
     }
 
     return {
-        title: `${post.title} | Khanh Nguyen Blog`,
+        title: `${post.title} | Khanh Pham Blog`,
         description: post.description,
     };
 }
