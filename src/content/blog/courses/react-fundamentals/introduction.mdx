@@ -1,0 +1,78 @@
+---
+title: "Introduction to React"
+description: "Learn what React is, why it's powerful, and how it transforms the way we build user interfaces."
+date: "2026-01-01"
+level: "beginner"
+tags: ["React", "Course", "Fundamentals"]
+course: "react-fundamentals"
+courseChapter: "getting-started"
+---
+
+# Introduction to React
+
+Welcome to the React Fundamentals course! In this first lesson, we'll explore what React is and why it has become one of the most popular tools for building modern web applications.
+
+## What is React?
+
+React is a **JavaScript library** for building user interfaces, created by Facebook (now Meta) in 2013. Unlike full-fledged frameworks like Angular, React focuses specifically on the **view layer** of your application.
+
+> React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes.
+
+## Why Learn React?
+
+Here are some compelling reasons to learn React:
+
+1. **Component-Based Architecture** - Build encapsulated components that manage their own state
+2. **Virtual DOM** - React's efficient diffing algorithm minimizes expensive DOM operations
+3. **Huge Ecosystem** - Thousands of libraries, tools, and resources available
+4. **Industry Demand** - React developers are highly sought after in the job market
+
+## Your First React Component
+
+Let's look at a simple React component:
+
+```jsx
+function Welcome({ name }) {
+  return (
+    <div className="welcome-card">
+      <h1>Hello, {name}!</h1>
+      <p>Welcome to React.</p>
+    </div>
+  );
+}
+
+// Usage
+<Welcome name="Developer" />
+```
+
+This component:
+- Accepts a `name` prop
+- Returns JSX (JavaScript XML) that looks like HTML
+- Can be reused anywhere in your application
+
+## JSX: JavaScript + XML
+
+JSX is a syntax extension that lets you write HTML-like code in JavaScript. Under the hood, it gets compiled to regular JavaScript:
+
+```jsx
+// JSX
+const element = <h1 className="title">Hello World</h1>;
+
+// Compiles to
+const element = React.createElement(
+  'h1',
+  { className: 'title' },
+  'Hello World'
+);
+```
+
+## Key Takeaways
+
+- React is a library for building UIs
+- Components are the building blocks of React apps
+- JSX lets you write HTML-like syntax in JavaScript
+- React uses a Virtual DOM for efficient updates
+
+---
+
+In the next lesson, we'll set up your development environment and create your first React project!

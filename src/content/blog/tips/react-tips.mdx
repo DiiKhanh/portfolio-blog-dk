@@ -1,0 +1,95 @@
+---
+title: "5 React Tips to Boost Your Productivity"
+description: "Practical tips and tricks to write cleaner React code and speed up your development workflow."
+date: "2026-01-05"
+level: "intermediate"
+tags: ["React", "Tips", "Productivity"]
+---
+
+# 5 React Tips to Boost Your Productivity
+
+React is a powerful library, but sometimes we can get bogged down in repetitive patterns. Here are five tips that have helped me write better React code.
+
+## 1. Use the `useCallback` Hook Wisely
+
+Don't wrap every function in `useCallback`. Only use it when:
+
+- You're passing a callback to child components that are memoized with `React.memo`
+- The function is a dependency of another hook like `useEffect`
+
+```jsx
+// ❌ Unnecessary useCallback
+const handleClick = useCallback(() => {
+  console.log('clicked');
+}, []);
+
+// ✅ Good use case - passing to memoized child
+const handleSubmit = useCallback((data) => {
+  submitForm(data);
+}, [submitForm]);
+```
+
+## 2. Leverage Fragment Shorthand
+
+Instead of writing `<React.Fragment>`, use the shorthand `<>`:
+
+```jsx
+// ✅ Clean and readable
+return (
+  <>
+    <Header />
+    <Main />
+    <Footer />
+  </>
+);
+```
+
+## 3. Destructure Props in Function Parameters
+
+This makes your code cleaner and shows exactly what props the component expects:
+
+```jsx
+// ✅ Clear and explicit
+function UserCard({ name, email, avatar }) {
+  return (
+    <div className="user-card">
+      <img src={avatar} alt={name} />
+      <h3>{name}</h3>
+      <p>{email}</p>
+    </div>
+  );
+}
+```
+
+## 4. Use Optional Chaining with State
+
+When dealing with potentially undefined state, optional chaining saves you from ugly conditionals:
+
+```jsx
+// ✅ Clean with optional chaining
+const userName = user?.profile?.name ?? 'Anonymous';
+```
+
+## 5. Create Custom Hooks for Reusable Logic
+
+If you find yourself copying the same `useState` + `useEffect` pattern, extract it into a custom hook:
+
+```jsx
+// Custom hook for localStorage
+function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() => {
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : initialValue;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue];
+}
+```
+
+---
+
+These tips might seem small, but they add up to more maintainable and readable code. Happy coding! 🚀

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, DM_Sans } from "next/font/google";
+import { Space_Grotesk, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import "./globals.css";
 
@@ -11,6 +11,12 @@ const spaceGrotesk = Space_Grotesk({
 
 const dmSans = DM_Sans({
   variable: "--font-body",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
@@ -35,7 +41,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${spaceGrotesk.variable} ${dmSans.variable} antialiased`}
+        className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased`}
       >
         <ThemeProvider
           attribute="class"
@@ -45,12 +51,12 @@ export default function RootLayout({
         >
           {/* Grid Background */}
           <div className="grid-background" aria-hidden="true" />
-          
+
           {/* Mesh Gradient Decorations */}
           <div className="mesh-gradient-top-left" aria-hidden="true" />
           <div className="mesh-gradient-bottom-right" aria-hidden="true" />
           <div className="mesh-gradient-center" aria-hidden="true" />
-          
+
           {children}
         </ThemeProvider>
       </body>

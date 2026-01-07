@@ -1,0 +1,34 @@
+{
+    "title": "React Fundamentals Course",
+    "description": "Master the fundamentals of React from scratch",
+    "chapters": [
+        {
+            "title": "Getting Started",
+            "slug": "getting-started",
+            "lessons": [
+                {
+                    "title": "Introduction to React",
+                    "slug": "introduction"
+                },
+                {
+                    "title": "Setting Up Your Environment",
+                    "slug": "setup"
+                }
+            ]
+        },
+        {
+            "title": "Core Concepts",
+            "slug": "core-concepts",
+            "lessons": [
+                {
+                    "title": "Components & Props",
+                    "slug": "components-props"
+                },
+                {
+                    "title": "State & Lifecycle",
+                    "slug": "state-lifecycle"
+                }
+            ]
+        }
+    ]
+}

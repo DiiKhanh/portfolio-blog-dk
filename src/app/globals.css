@@ -10,22 +10,22 @@
   --background-secondary: #0A0E27;
   --foreground: #E0E0FF;
   --foreground-muted: #9CA3AF;
-  
+
   /* Primary Colors */
   --primary: #00FFFF;
   --primary-hover: #00E5E5;
   --secondary: #FF00FF;
   --accent: #7B61FF;
-  
+
   /* UI Colors */
   --border: #333344;
   --card: rgba(255, 255, 255, 0.05);
   --card-hover: rgba(255, 255, 255, 0.1);
-  
+
   /* Glass Effect */
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
-  
+
   /* Grid Pattern */
   --grid-color: rgba(255, 255, 255, 0.03);
 }
@@ -35,19 +35,19 @@
   --background-secondary: #FFFFFF;
   --foreground: #0F172A;
   --foreground-muted: #64748B;
-  
+
   --primary: #0891B2;
   --primary-hover: #0E7490;
   --secondary: #A855F7;
   --accent: #6366F1;
-  
+
   --border: #E2E8F0;
   --card: rgba(255, 255, 255, 0.8);
   --card-hover: rgba(255, 255, 255, 0.95);
-  
+
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(0, 0, 0, 0.1);
-  
+
   --grid-color: rgba(0, 0, 0, 0.03);
 }
 
@@ -60,19 +60,19 @@
   --color-background-secondary: var(--background-secondary);
   --color-foreground: var(--foreground);
   --color-foreground-muted: var(--foreground-muted);
-  
+
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
-  
+
   --color-border: var(--border);
   --color-card: var(--card);
   --color-card-hover: var(--card-hover);
-  
+
   --color-glass-bg: var(--glass-bg);
   --color-glass-border: var(--glass-border);
-  
+
   --font-heading: "Space Grotesk", sans-serif;
   --font-body: "DM Sans", sans-serif;
 }
@@ -101,7 +101,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: 0;
-  background-image: 
+  background-image:
     linear-gradient(var(--grid-color) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
   background-size: 60px 60px;
@@ -204,7 +204,7 @@ body {
   font-size: 14px;
   font-weight: 500;
   color: var(--foreground);
-  box-shadow: 
+  box-shadow:
     4px 4px 12px rgba(0, 0, 0, 0.3),
     -2px -2px 8px rgba(255, 255, 255, 0.05),
     inset 1px 1px 2px rgba(255, 255, 255, 0.1);
@@ -214,7 +214,7 @@ body {
 
 .clay-badge:hover {
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     6px 6px 16px rgba(0, 0, 0, 0.35),
     -3px -3px 10px rgba(255, 255, 255, 0.08),
     inset 1px 1px 2px rgba(255, 255, 255, 0.15);
@@ -223,14 +223,14 @@ body {
 .light .clay-badge {
   background: linear-gradient(145deg, #FFFFFF, #F1F5F9);
   color: var(--foreground);
-  box-shadow: 
+  box-shadow:
     4px 4px 12px rgba(0, 0, 0, 0.1),
     -2px -2px 8px rgba(255, 255, 255, 0.8),
     inset 1px 1px 2px rgba(255, 255, 255, 1);
 }
 
 .light .clay-badge:hover {
-  box-shadow: 
+  box-shadow:
     6px 6px 16px rgba(0, 0, 0, 0.12),
     -3px -3px 10px rgba(255, 255, 255, 0.9),
     inset 1px 1px 2px rgba(255, 255, 255, 1);
@@ -257,8 +257,15 @@ body {
 }
 
 @keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 /* ============================================
@@ -381,6 +388,7 @@ body {
 }
 
 @media (max-width: 640px) {
+
   .bento-item.span-2,
   .bento-item.span-3 {
     grid-column: span 1;
@@ -392,6 +400,7 @@ body {
    ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -399,8 +408,300 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  
+
   html {
     scroll-behavior: auto;
   }
+}
+
+/* ============================================
+   BLOG LAYOUT
+   ============================================ */
+
+.blog-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+@media (max-width: 1024px) {
+  .blog-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================
+   GLASS SIDEBAR
+   ============================================ */
+
+.sidebar-glass {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 40;
+  overflow-y: auto;
+}
+
+.light .sidebar-glass {
+  background: rgba(255, 255, 255, 0.7);
+  border-right-color: rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 1024px) {
+  .sidebar-glass {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar-glass.open {
+    transform: translateX(0);
+  }
+}
+
+/* Scrollbar styling for sidebar */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground-muted);
+}
+
+/* ============================================
+   BRUTALIST HEADING
+   ============================================ */
+
+.brutalist-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--foreground-muted) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================
+   TERMINAL CODE BLOCK
+   ============================================ */
+
+.code-terminal {
+  background: #0D1117;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.5);
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #161B22;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.terminal-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.terminal-dots .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.terminal-dots .dot-red {
+  background: #FF5F56;
+}
+
+.terminal-dots .dot-yellow {
+  background: #FFBD2E;
+}
+
+.terminal-dots .dot-green {
+  background: #27CA40;
+}
+
+.terminal-content {
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.terminal-content pre {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.terminal-content code {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  color: #E6EDF3;
+}
+
+.copy-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  cursor: pointer;
+  color: var(--foreground-muted);
+  transition: all 0.2s ease;
+}
+
+.copy-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--foreground);
+}
+
+/* ============================================
+   INLINE CODE
+   ============================================ */
+
+.inline-code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: var(--primary);
+}
+
+.light .inline-code {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+/* ============================================
+   LEVEL BADGES (Claymorphism)
+   ============================================ */
+
+.level-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 10px;
+}
+
+.level-badge-beginner {
+  background: linear-gradient(145deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.1));
+  color: #22C55E;
+  box-shadow:
+    3px 3px 8px rgba(0, 0, 0, 0.3),
+    -1px -1px 4px rgba(34, 197, 94, 0.1),
+    inset 1px 1px 2px rgba(34, 197, 94, 0.2);
+}
+
+.level-badge-intermediate {
+  background: linear-gradient(145deg, rgba(234, 179, 8, 0.2), rgba(234, 179, 8, 0.1));
+  color: #EAB308;
+  box-shadow:
+    3px 3px 8px rgba(0, 0, 0, 0.3),
+    -1px -1px 4px rgba(234, 179, 8, 0.1),
+    inset 1px 1px 2px rgba(234, 179, 8, 0.2);
+}
+
+.level-badge-advanced {
+  background: linear-gradient(145deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1));
+  color: #EF4444;
+  box-shadow:
+    3px 3px 8px rgba(0, 0, 0, 0.3),
+    -1px -1px 4px rgba(239, 68, 68, 0.1),
+    inset 1px 1px 2px rgba(239, 68, 68, 0.2);
+}
+
+.light .level-badge-beginner {
+  background: linear-gradient(145deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.08));
+  box-shadow:
+    3px 3px 8px rgba(0, 0, 0, 0.1),
+    -1px -1px 4px rgba(255, 255, 255, 0.8),
+    inset 1px 1px 2px rgba(34, 197, 94, 0.1);
+}
+
+.light .level-badge-intermediate {
+  background: linear-gradient(145deg, rgba(234, 179, 8, 0.15), rgba(234, 179, 8, 0.08));
+  box-shadow:
+    3px 3px 8px rgba(0, 0, 0, 0.1),
+    -1px -1px 4px rgba(255, 255, 255, 0.8),
+    inset 1px 1px 2px rgba(234, 179, 8, 0.1);
+}
+
+.light .level-badge-advanced {
+  background: linear-gradient(145deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.08));
+  box-shadow:
+    3px 3px 8px rgba(0, 0, 0, 0.1),
+    -1px -1px 4px rgba(255, 255, 255, 0.8),
+    inset 1px 1px 2px rgba(239, 68, 68, 0.1);
+}
+
+/* ============================================
+   BLOG CONTENT AREA
+   ============================================ */
+
+.blog-content {
+  margin-left: 280px;
+  padding: 60px 40px;
+  max-width: 900px;
+}
+
+@media (max-width: 1024px) {
+  .blog-content {
+    margin-left: 0;
+    padding: 40px 20px;
+  }
+}
+
+/* ============================================
+   BLOG CARD
+   ============================================ */
+
+.blog-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.blog-card:hover {
+  background: var(--card-hover);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.3);
+}
+
+.light .blog-card:hover {
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.1);
 }
