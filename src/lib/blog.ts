@@ -66,21 +66,42 @@ export async function getAllPosts(): Promise<BlogPost[]> {
 }
 
 export async function getPostBySlug(slug: string, category?: "tips" | "courses"): Promise<BlogPost | null> {
-    let filePath: string;
-    let postCategory: "tips" | "courses";
+    let filePath: string = "";
+    let postCategory: "tips" | "courses" = "tips";
 
     if (category) {
         filePath = path.join(BLOG_PATH, category, `${slug}.mdx`);
         postCategory = category;
     } else {
         // Try tips first
-        filePath = path.join(BLOG_PATH, "tips", `${slug}.mdx`);
-        if (fs.existsSync(filePath)) {
+        const tipsPath = path.join(BLOG_PATH, "tips", `${slug}.mdx`);
+        if (fs.existsSync(tipsPath)) {
+            filePath = tipsPath;
             postCategory = "tips";
         } else {
-            // Try courses (slug might include course name)
-            filePath = path.join(BLOG_PATH, "courses", `${slug}.mdx`);
-            postCategory = "courses";
+            // Try courses - convert slug format (course-name-lesson) to path (course-name/lesson)
+            // Try to find the course by matching the beginning of the slug
+            const coursesPath = path.join(BLOG_PATH, "courses");
+            if (fs.existsSync(coursesPath)) {
+                const courses = fs.readdirSync(coursesPath);
+                for (const course of courses) {
+                    const coursePath = path.join(coursesPath, course);
+                    if (fs.statSync(coursePath).isDirectory() && slug.startsWith(course + "-")) {
+                        const lessonSlug = slug.slice(course.length + 1);
+                        const tryPath = path.join(coursePath, `${lessonSlug}.mdx`);
+                        if (fs.existsSync(tryPath)) {
+                            filePath = tryPath;
+                            postCategory = "courses";
+                            break;
+                        }
+                    }
+                }
+            }
+            // Fallback to direct path in courses folder
+            if (!filePath) {
+                filePath = path.join(BLOG_PATH, "courses", `${slug}.mdx`);
+                postCategory = "courses";
+            }
         }
     }
 
