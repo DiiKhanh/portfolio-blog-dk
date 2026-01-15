@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatedSection } from "@/components/ui/animated-section";
-import { GlassCard } from "@/components/ui/glass-card";
+import { ProCard } from "@/components/ui/pro-card";
 import { Code, Briefcase, Coffee, MapPin } from "lucide-react";
 
 
@@ -28,7 +28,7 @@ export function About() {
                 {/* Bento Grid Layout */}
                 <div className="bento-grid">
                     {/* Profile Card - Large */}
-                    <GlassCard className="bento-item span-2 row-span-2 flex flex-col items-center justify-center text-center p-8">
+                    <ProCard className="bento-item span-2 row-span-2 flex flex-col items-center justify-center text-center p-8">
                         <div className="relative w-40 h-40 mb-6 rounded-full overflow-hidden border-4 border-glass-border">
                             {/* Gradient Avatar Placeholder */}
                             <div className="absolute inset-0 bg-gradient-to-br from-primary/40 via-accent/30 to-secondary/40" />
@@ -46,10 +46,10 @@ export function About() {
                             <MapPin className="w-4 h-4" />
                             <span>Ho Chi Minh City, Vietnam</span>
                         </div>
-                    </GlassCard>
+                    </ProCard>
 
                     {/* Bio Card */}
-                    <GlassCard className="bento-item span-2 p-8">
+                    <ProCard className="bento-item span-2 p-8">
                         <h3 className="font-heading text-xl font-semibold mb-4">
                             My Journey
                         </h3>
@@ -59,21 +59,21 @@ export function About() {
                             and Node.js, with a strong focus on creating intuitive user experiences
                             and scalable architectures.
                         </p>
-                    </GlassCard>
+                    </ProCard>
 
                     {/* Stats Cards */}
                     {stats.map((stat, index) => (
-                        <GlassCard key={index} className="bento-item p-6 text-center">
+                        <ProCard key={index} className="bento-item p-6 text-center">
                             <stat.icon className="w-8 h-8 mx-auto mb-3 text-primary" />
                             <div className="font-heading text-3xl font-bold mb-1 gradient-text">
                                 {stat.value}
                             </div>
                             <div className="text-sm text-foreground-muted">{stat.label}</div>
-                        </GlassCard>
+                        </ProCard>
                     ))}
 
                     {/* Philosophy Card */}
-                    <GlassCard className="bento-item span-2 p-8">
+                    <ProCard className="bento-item span-2 p-8">
                         <h3 className="font-heading text-xl font-semibold mb-4">
                             What Drives Me
                         </h3>
@@ -82,7 +82,7 @@ export function About() {
                             that genuinely help people. Every project is an opportunity to learn
                             something new and push the boundaries of what&apos;s possible on the web.
                         </p>
-                    </GlassCard>
+                    </ProCard>
                 </div>
             </div>
         </AnimatedSection>

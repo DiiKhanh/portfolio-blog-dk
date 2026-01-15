@@ -26,6 +26,14 @@
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
 
+  /* Pro Card (Solid Dark Style) */
+  --pro-card-bg: #111827;
+  --pro-card-bg-hover: #1e293b;
+  --pro-card-border: rgba(59, 130, 246, 0.3);
+  --pro-card-border-hover: rgba(59, 130, 246, 0.6);
+  --pro-card-glow: 0 0 40px -12px rgba(59, 130, 246, 0.4);
+  --pro-card-glow-hover: 0 0 60px -8px rgba(59, 130, 246, 0.6);
+
   /* Grid Pattern */
   --grid-color: rgba(255, 255, 255, 0.03);
 }
@@ -47,6 +55,14 @@
 
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(0, 0, 0, 0.1);
+
+  /* Pro Card (Light Mode) */
+  --pro-card-bg: #FFFFFF;
+  --pro-card-bg-hover: #F8FAFC;
+  --pro-card-border: rgba(99, 102, 241, 0.3);
+  --pro-card-border-hover: rgba(99, 102, 241, 0.5);
+  --pro-card-glow: 0 4px 24px -8px rgba(99, 102, 241, 0.15);
+  --pro-card-glow-hover: 0 8px 32px -8px rgba(99, 102, 241, 0.25);
 
   --grid-color: rgba(0, 0, 0, 0.03);
 }
@@ -191,6 +207,79 @@ body {
 
 .light .glass-card:hover {
   box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   PRO CARD (Modern Dark Solid Style)
+   ============================================ */
+
+.pro-card {
+  background: var(--pro-card-bg);
+  border: 1px solid var(--pro-card-border);
+  border-radius: 20px;
+  box-shadow: var(--pro-card-glow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.pro-card:hover {
+  background: var(--pro-card-bg-hover);
+  border-color: var(--pro-card-border-hover);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--pro-card-glow-hover);
+}
+
+/* Pro Card with gradient border effect */
+.pro-card-gradient {
+  position: relative;
+  background: var(--pro-card-bg);
+  border-radius: 20px;
+  padding: 1px;
+  box-shadow: var(--pro-card-glow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.pro-card-gradient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  padding: 1px;
+  background: linear-gradient(135deg,
+      rgba(59, 130, 246, 0.4) 0%,
+      rgba(139, 92, 246, 0.3) 50%,
+      rgba(59, 130, 246, 0.2) 100%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.pro-card-gradient:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--pro-card-glow-hover);
+}
+
+.pro-card-gradient:hover::before {
+  background: linear-gradient(135deg,
+      rgba(59, 130, 246, 0.6) 0%,
+      rgba(139, 92, 246, 0.5) 50%,
+      rgba(59, 130, 246, 0.4) 100%);
+}
+
+.pro-card-inner {
+  background: var(--pro-card-bg);
+  border-radius: 19px;
+  height: 100%;
+  transition: background 0.3s ease;
+}
+
+.pro-card-gradient:hover .pro-card-inner {
+  background: var(--pro-card-bg-hover);
 }
 
 /* ============================================

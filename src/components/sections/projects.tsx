@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatedSection, staggerContainer, staggerItem } from "@/components/ui/animated-section";
-import { GlassCard } from "@/components/ui/glass-card";
+import { ProCard } from "@/components/ui/pro-card";
 import { ClayBadge } from "@/components/ui/clay-badge";
 import { ExternalLink, Github } from "lucide-react";
 import { motion } from "framer-motion";
@@ -82,7 +82,7 @@ export function Projects() {
                             variants={staggerItem}
                             className={`bento-item ${project.span}`}
                         >
-                            <GlassCard className="h-full flex flex-col p-0 overflow-hidden cursor-pointer group">
+                            <ProCard className="h-full flex flex-col p-0 overflow-hidden group">
                                 {/* Project Image */}
                                 <div className="relative h-48 overflow-hidden">
                                     <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20" />
@@ -142,7 +142,7 @@ export function Projects() {
                                         )}
                                     </div>
                                 </div>
-                            </GlassCard>
+                            </ProCard>
                         </motion.div>
                     ))}
                 </motion.div>

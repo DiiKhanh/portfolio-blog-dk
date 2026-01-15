@@ -2,6 +2,7 @@
 
 import { AnimatedSection, staggerContainer, staggerItem } from "@/components/ui/animated-section";
 import { ClayBadge } from "@/components/ui/clay-badge";
+import { ProCard } from "@/components/ui/pro-card";
 import { motion } from "framer-motion";
 
 const skillCategories = [
@@ -46,7 +47,7 @@ export function Skills() {
                             whileInView="visible"
                             viewport={{ once: true, margin: "-50px" }}
                             variants={staggerContainer}
-                            className="glass-card p-6 md:p-8"
+                            className="pro-card p-6 md:p-8"
                         >
                             <h3 className="font-heading text-xl font-semibold mb-6 text-primary">
                                 {category.title}

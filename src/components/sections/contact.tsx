@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatedSection } from "@/components/ui/animated-section";
-import { GlassCard } from "@/components/ui/glass-card";
+import { ProCard } from "@/components/ui/pro-card";
 import { Mail, Github, Linkedin, Twitter, Send } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -27,7 +27,7 @@ export function Contact() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* Contact Info */}
-                    <GlassCard className="p-8">
+                    <ProCard className="p-8" hover={false}>
                         <h3 className="font-heading text-2xl font-semibold mb-6">
                             Let&apos;s Connect
                         </h3>
@@ -68,10 +68,10 @@ export function Contact() {
                                 </motion.a>
                             ))}
                         </div>
-                    </GlassCard>
+                    </ProCard>
 
                     {/* Contact Form */}
-                    <GlassCard className="p-8">
+                    <ProCard className="p-8" hover={false}>
                         <form className="space-y-6">
                             <div>
                                 <label htmlFor="name" className="block text-sm font-medium mb-2">
@@ -122,7 +122,7 @@ export function Contact() {
                                 Send Message
                             </motion.button>
                         </form>
-                    </GlassCard>
+                    </ProCard>
                 </div>
             </div>
         </AnimatedSection>

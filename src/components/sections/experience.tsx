@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatedSection } from "@/components/ui/animated-section";
-import { GlassCard } from "@/components/ui/glass-card";
+import { ProCard } from "@/components/ui/pro-card";
 import { motion } from "framer-motion";
 import { Building2, Calendar } from "lucide-react";
 
@@ -65,7 +65,7 @@ export function Experience() {
 
                                 {/* Content */}
                                 <div className={`flex-1 pl-8 md:pl-0 ${index % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"}`}>
-                                    <GlassCard className="p-6">
+                                    <ProCard className="p-6">
                                         {/* Header */}
                                         <div className={`flex items-start gap-4 mb-4 ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}>
                                             <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -99,7 +99,7 @@ export function Experience() {
                                                 </span>
                                             ))}
                                         </div>
-                                    </GlassCard>
+                                    </ProCard>
                                 </div>
 
                                 {/* Spacer for alternating layout */}
