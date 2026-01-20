@@ -151,7 +151,7 @@ export function Hero() {
                         transition={{ duration: 0.6, delay: 0.5 }}
                         className="hidden lg:block"
                     >
-                        <TerminalCode title="DanTech.kt" lines={codeLines} />
+                        <TerminalCode title="dk.ts" lines={codeLines} />
                     </motion.div>
                 </div>
 

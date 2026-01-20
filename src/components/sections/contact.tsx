@@ -2,13 +2,12 @@
 
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { ProCard } from "@/components/ui/pro-card";
-import { Mail, Github, Linkedin, Twitter, Send } from "lucide-react";
+import { Mail, Github, Linkedin, Send } from "lucide-react";
 import { motion } from "framer-motion";
 
 const socialLinks = [
-    { icon: Github, href: "https://github.com", label: "GitHub" },
-    { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-    { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
+    { icon: Github, href: "https://github.com/DiiKhanh", label: "GitHub" },
+    { icon: Linkedin, href: "https://www.linkedin.com/in/duykhanh030803", label: "LinkedIn" },
 ];
 
 export function Contact() {
@@ -38,7 +37,7 @@ export function Contact() {
 
                         {/* Email */}
                         <a
-                            href="mailto:hello@example.com"
+                            href="mailto:duykhanh.030803@gmail.com"
                             className="flex items-center gap-4 p-4 rounded-xl bg-primary/5 hover:bg-primary/10 transition-colors mb-6 group cursor-pointer"
                         >
                             <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -47,7 +46,7 @@ export function Contact() {
                             <div>
                                 <p className="text-sm text-foreground-muted">Email</p>
                                 <p className="font-medium group-hover:text-primary transition-colors">
-                                    hello@example.com
+                                    duykhanh.030803@gmail.com
                                 </p>
                             </div>
                         </a>

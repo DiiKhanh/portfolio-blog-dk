@@ -1,13 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Github, Linkedin, Twitter, Heart } from "lucide-react";
+import { Github, Linkedin, Heart } from "lucide-react";
 import Link from "next/link";
 
 const socialLinks = [
-    { icon: Github, href: "https://github.com", label: "GitHub" },
-    { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-    { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
+    { icon: Github, href: "https://github.com/DiiKhanh", label: "GitHub" },
+    { icon: Linkedin, href: "https://linkedin.com/in/duykhanh030803", label: "LinkedIn" }
 ];
 
 export function Footer() {
