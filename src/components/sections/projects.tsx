@@ -107,7 +107,7 @@ export function Projects() {
                                         {project.tech.map((tech) => (
                                             <span
                                                 key={tech}
-                                                className="text-xs px-2 py-1 rounded-md bg-primary/10 text-primary font-medium"
+                                                className="text-xs px-2 py-1 rounded-md bg-primary/10 text-primary font-medium hover:bg-primary/20 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
                                             >
                                                 {tech}
                                             </span>
