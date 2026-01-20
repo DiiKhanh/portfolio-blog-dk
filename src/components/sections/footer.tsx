@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUp, Github, Linkedin, Twitter, Heart } from "lucide-react";
+import { Github, Linkedin, Twitter, Heart } from "lucide-react";
 import Link from "next/link";
 
 const socialLinks = [
@@ -11,10 +11,6 @@ const socialLinks = [
 ];
 
 export function Footer() {
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    };
-
     return (
         <footer className="relative z-10 border-t border-border">
             <div className="max-w-6xl mx-auto px-6 py-12">
@@ -51,16 +47,6 @@ export function Footer() {
                             </motion.a>
                         ))}
                     </div>
-
-                    {/* Back to Top */}
-                    <motion.button
-                        onClick={scrollToTop}
-                        className="w-12 h-12 rounded-full glass flex items-center justify-center text-foreground-muted hover:text-primary transition-colors cursor-pointer"
-                        whileHover={{ y: -2 }}
-                        aria-label="Back to top"
-                    >
-                        <ArrowUp className="w-5 h-5" />
-                    </motion.button>
                 </div>
             </div>
         </footer>

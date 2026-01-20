@@ -77,7 +77,9 @@ export function Navbar() {
                     }`}
             >
                 <nav
-                    className={`mx-auto max-w-6xl glass rounded-2xl px-6 py-4 transition-all duration-300 ${isScrolled ? "py-3" : ""
+                    className={`mx-auto max-w-6xl rounded-2xl px-6 transition-all duration-300 ${isScrolled
+                        ? "py-3 bg-background/80 backdrop-blur-xl border border-border shadow-lg"
+                        : "py-4 bg-background/60 backdrop-blur-md border border-border/50"
                         }`}
                 >
                     <div className="flex items-center justify-between">
@@ -130,10 +132,9 @@ export function Navbar() {
                                                         },
                                                     }}
                                                 />
-                                                {/* Main animated underline */}
                                                 <motion.span
                                                     layoutId="activeTab"
-                                                    className="absolute left-0 right-0 -bottom-1 h-0.5 bg-gradient-to-r from-primary via-secondary to-accent rounded-full"
+                                                    className="absolute left-0 right-0 -bottom-1 h-0.5 bg-linear-to-r from-primary via-secondary to-accent rounded-full"
                                                     initial={{ scaleX: 0 }}
                                                     animate={{ scaleX: 1 }}
                                                     transition={{

@@ -2,6 +2,7 @@
 
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { ProCard } from "@/components/ui/pro-card";
+import { TerminalCode } from "@/components/ui/terminal-code";
 import { Code, Briefcase, Coffee, MapPin } from "lucide-react";
 
 
@@ -9,6 +10,16 @@ const stats = [
     { icon: Code, value: "5+", label: "Years Experience" },
     { icon: Briefcase, value: "30+", label: "Projects Completed" },
     { icon: Coffee, value: "1000+", label: "Cups of Coffee" },
+];
+
+const techStackCode = [
+    "$ npm list --depth=0",
+    "",
+    "├── frontend: React, Next.js, TypeScript",
+    "├── backend: Node.js, Express, NestJS",
+    "├── database: PostgreSQL, MongoDB",
+    "├── tools: Git, Docker, AWS",
+    "└── learning: Always something new 🚀",
 ];
 
 export function About() {
@@ -31,7 +42,7 @@ export function About() {
                     <ProCard className="bento-item span-2 row-span-2 flex flex-col items-center justify-center text-center p-8">
                         <div className="relative w-40 h-40 mb-6 rounded-full overflow-hidden border-4 border-glass-border">
                             {/* Gradient Avatar Placeholder */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-primary/40 via-accent/30 to-secondary/40" />
+                            <div className="absolute inset-0 bg-linear-to-br from-primary/40 via-accent/30 to-secondary/40" />
                             <div className="absolute inset-0 flex items-center justify-center">
                                 <span className="text-5xl font-heading font-bold text-white/80">KN</span>
                             </div>
@@ -71,6 +82,11 @@ export function About() {
                             <div className="text-sm text-foreground-muted">{stat.label}</div>
                         </ProCard>
                     ))}
+
+                    {/* Tech Stack Terminal - spans 2 columns */}
+                    <div className="bento-item span-2">
+                        <TerminalCode title="tech-stack" lines={techStackCode} />
+                    </div>
 
                     {/* Philosophy Card */}
                     <ProCard className="bento-item span-2 p-8">

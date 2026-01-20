@@ -46,7 +46,7 @@ export function Experience() {
                 {/* Timeline */}
                 <div className="relative">
                     {/* Timeline Line */}
-                    <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-border transform md:-translate-x-1/2" />
+                    <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-0.5 bg-linear-to-b from-primary/50 via-secondary/30 to-accent/50 transform md:-translate-x-1/2" />
 
                     {/* Experience Items */}
                     <div className="space-y-12">
@@ -61,14 +61,13 @@ export function Experience() {
                                     }`}
                             >
                                 {/* Timeline Dot */}
-                                <div className="absolute left-0 md:left-1/2 w-4 h-4 rounded-full bg-primary border-4 border-background transform -translate-x-1/2 md:-translate-x-1/2 z-10" />
+                                <div className="absolute left-0 md:left-1/2 w-3 h-3 rounded-full bg-primary/60 border-2 border-background shadow-[0_0_12px_rgba(0,217,255,0.5)] transform -translate-x-1/2 md:-translate-x-1/2 z-10" />
 
                                 {/* Content */}
                                 <div className={`flex-1 pl-8 md:pl-0 ${index % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"}`}>
                                     <ProCard className="p-6">
-                                        {/* Header */}
                                         <div className={`flex items-start gap-4 mb-4 ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}>
-                                            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                                                 <Building2 className="w-6 h-6 text-primary" />
                                             </div>
                                             <div className={`${index % 2 === 0 ? "md:text-right" : ""}`}>
