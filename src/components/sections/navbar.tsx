@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
     { href: "#about", label: "About" },
@@ -16,6 +17,8 @@ const navLinks = [
 ];
 
 export function Navbar() {
+    const pathname = usePathname();
+    const isHomePage = pathname === "/";
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [activeSection, setActiveSection] = useState<string>("");
@@ -95,10 +98,18 @@ export function Navbar() {
                         <div className="hidden md:flex items-center gap-8">
                             {navLinks.map((link) => {
                                 const isActive = activeSection === link.href;
+                                // For blog link, always use absolute path
+                                // For section links, use hash on home page, full path otherwise
+                                const href = link.href === "/blog"
+                                    ? "/blog"
+                                    : isHomePage
+                                        ? link.href
+                                        : `/${link.href}`;
+
                                 return (
                                     <Link
                                         key={link.href}
-                                        href={link.href}
+                                        href={href}
                                         className={`relative py-2 text-sm font-medium transition-all duration-300 ${isActive
                                             ? "text-foreground"
                                             : "text-foreground-muted hover:text-foreground"
@@ -185,6 +196,12 @@ export function Navbar() {
                         <div className="flex flex-col gap-4">
                             {navLinks.map((link, index) => {
                                 const isActive = activeSection === link.href;
+                                const href = link.href === "/blog"
+                                    ? "/blog"
+                                    : isHomePage
+                                        ? link.href
+                                        : `/${link.href}`;
+
                                 return (
                                     <motion.div
                                         key={link.href}
@@ -193,7 +210,7 @@ export function Navbar() {
                                         transition={{ delay: index * 0.1 }}
                                     >
                                         <Link
-                                            href={link.href}
+                                            href={href}
                                             onClick={() => setIsMobileMenuOpen(false)}
                                             className={`block text-lg font-medium transition-colors py-2 pl-3 ${isActive
                                                 ? "text-foreground border-l-2 border-primary"
