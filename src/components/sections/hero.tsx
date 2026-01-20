@@ -38,14 +38,17 @@ export function Hero() {
                             transition={{ duration: 0.6, delay: 0.2 }}
                             className="mb-8 flex items-center gap-3"
                         >
-                            {/* Avatar */}
-                            <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-primary/30">
-                                <div className="absolute inset-0 bg-linear-to-br from-primary/40 via-accent/30 to-secondary/40" />
-                                <div className="absolute inset-0 flex items-center justify-center">
+                            {/* Avatar with hover effects */}
+                            <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-primary/30 transition-all duration-300 hover:scale-110 hover:border-primary hover:shadow-lg hover:shadow-primary/50 group cursor-pointer">
+                                {/* Rotating gradient border effect on hover */}
+                                <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-linear-to-r from-primary via-accent to-secondary animate-spin-slow" style={{ padding: '2px' }}>
+                                    <div className="absolute inset-[2px] rounded-full bg-background" />
+                                </div>
+                                {/* Avatar content */}
+                                <div className="absolute inset-0 bg-linear-to-br from-primary/40 via-accent/30 to-secondary/40 z-10" />
+                                <div className="absolute inset-0 flex items-center justify-center z-20">
                                     <span className="text-xl font-heading font-bold text-white/80">KP</span>
                                 </div>
-                                {/* Online indicator */}
-                                <div className="absolute bottom-1 right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-background" />
                             </div>
                             {/* Badge */}
                             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-foreground-muted">

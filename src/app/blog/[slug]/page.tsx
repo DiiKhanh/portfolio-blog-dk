@@ -60,13 +60,13 @@ export default async function BlogPostPage({ params }: PageProps) {
             )}
 
             {/* Main Content */}
-            <article className={hasSidebar ? "blog-content" : "max-w-3xl mx-auto px-6 py-12"}>
+            <article className={hasSidebar ? "blog-content pt-28" : "max-w-6xl mx-auto px-6 pt-28 pb-12"}>
                 {/* Back link */}
                 <Link
                     href="/blog"
-                    className="inline-flex items-center gap-2 text-foreground-muted hover:text-primary transition-colors mb-8"
+                    className="inline-flex items-center gap-2 text-foreground-muted hover:text-primary transition-colors mb-8 group"
                 >
-                    <ArrowLeft size={20} />
+                    <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
                     <span>Back to Blog</span>
                 </Link>
 

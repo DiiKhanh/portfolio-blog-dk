@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, Clock, Calendar, Tag } from "lucide-react";
+import { Clock, Calendar, Tag } from "lucide-react";
 import { getAllPosts } from "@/lib/blog";
 import { LevelBadge } from "@/components/blog";
 
@@ -18,15 +18,7 @@ export default async function BlogPage() {
                 {/* Gradient background */}
                 <div className="absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-accent/10 pointer-events-none" aria-hidden="true" />
 
-                <div className="max-w-6xl mx-auto relative z-10">
-                    <Link
-                        href="/"
-                        className="inline-flex items-center gap-2 text-foreground-muted hover:text-primary transition-colors mb-8 group"
-                    >
-                        <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-                        <span>Back to Home</span>
-                    </Link>
-
+                <div className="max-w-6xl mx-auto relative z-10 mt-10">
                     <h1 className="brutalist-heading text-6xl md:text-7xl mb-4">Blog</h1>
                     <p className="text-xl text-foreground-muted max-w-3xl leading-relaxed">
                         Tips, tutorials, and deep dives into software development, React, and modern web technologies.

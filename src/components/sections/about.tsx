@@ -30,12 +30,18 @@ export function About() {
                     {/* Row 1: Profile + Bio */}
                     {/* Profile Card - Large */}
                     <ProCard className="bento-item span-2 flex flex-col items-center justify-center text-center p-8">
-                        <div className="relative w-40 h-40 mb-6 rounded-full overflow-hidden border-4 border-glass-border">
-                            {/* Gradient Avatar Placeholder */}
-                            <div className="absolute inset-0 bg-linear-to-br from-primary/40 via-accent/30 to-secondary/40" />
-                            <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="relative w-40 h-40 mb-6 rounded-full overflow-hidden border-4 border-glass-border transition-all duration-300 hover:scale-105 hover:border-primary hover:shadow-xl hover:shadow-primary/30 group cursor-pointer">
+                            {/* Rotating gradient border effect on hover */}
+                            <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-linear-to-r from-primary via-accent to-secondary animate-spin-slow" style={{ padding: '4px' }}>
+                                <div className="absolute inset-[4px] rounded-full bg-background" />
+                            </div>
+                            {/* Avatar content */}
+                            <div className="absolute inset-0 bg-linear-to-br from-primary/40 via-accent/30 to-secondary/40 z-10" />
+                            <div className="absolute inset-0 flex items-center justify-center z-20">
                                 <span className="text-5xl font-heading font-bold text-white/80">KP</span>
                             </div>
+                            {/* Online indicator - top right */}
+                            <div className="absolute top-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-background z-30 animate-pulse" />
                         </div>
                         <h3 className="font-heading text-2xl font-bold mb-2">
                             Khanh Pham

@@ -27,7 +27,7 @@ export function GlassSidebar({
     const totalLessons = chapters.reduce((acc, c) => acc + c.lessons.length, 0);
 
     return (
-        <aside className="sidebar-glass sticky top-0">
+        <aside className="sidebar-glass sticky top-20">
             {/* Course Title Header */}
             <div className="p-6 border-b border-glass-border bg-linear-to-br from-primary/5 to-transparent">
                 <h2 className="font-heading font-bold text-xl text-foreground mb-2 leading-tight">
@@ -47,7 +47,7 @@ export function GlassSidebar({
             </div>
 
             {/* Tree Navigation */}
-            <div className="overflow-y-auto max-h-[calc(100vh-140px)] scrollbar-thin">
+            <div className="overflow-y-auto max-h-[calc(100vh-220px)] scrollbar-thin">
                 <TreeNavigation courseSlug={courseSlug} chapters={chapters} />
             </div>
         </aside>

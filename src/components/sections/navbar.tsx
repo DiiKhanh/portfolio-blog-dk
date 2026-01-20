@@ -97,7 +97,11 @@ export function Navbar() {
                         {/* Desktop Navigation */}
                         <div className="hidden md:flex items-center gap-8">
                             {navLinks.map((link) => {
-                                const isActive = activeSection === link.href;
+                                // Check if current route matches the link
+                                const isBlogLink = link.href === "/blog";
+                                const isBlogActive = isBlogLink && pathname.startsWith("/blog");
+                                const isActive = isBlogActive || activeSection === link.href;
+
                                 // For blog link, always use absolute path
                                 // For section links, use hash on home page, full path otherwise
                                 const href = link.href === "/blog"
@@ -195,7 +199,11 @@ export function Navbar() {
                     >
                         <div className="flex flex-col gap-4">
                             {navLinks.map((link, index) => {
-                                const isActive = activeSection === link.href;
+                                // Check if current route matches the link
+                                const isBlogLink = link.href === "/blog";
+                                const isBlogActive = isBlogLink && pathname.startsWith("/blog");
+                                const isActive = isBlogActive || activeSection === link.href;
+
                                 const href = link.href === "/blog"
                                     ? "/blog"
                                     : isHomePage
