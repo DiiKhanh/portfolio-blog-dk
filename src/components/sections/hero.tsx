@@ -6,12 +6,16 @@ import Link from "next/link";
 import { TerminalCode } from "@/components/ui/terminal-code";
 
 const codeLines = [
-    "const developer = {",
+    "import { Developer } from 'khanh-portfolio';",
+    "",
+    "const khanh: Developer = {",
     "  name: 'Khanh Pham',",
     "  role: 'Junior Software Engineer',",
-    "  skills: ['React', 'Next.js', 'Golang', 'Flutter'],",
+    "  stack: ['React', 'Next.js', 'Golang', 'Flutter'],",
     "  focus: 'Designing reliable workflows & systems',",
     "};",
+    "",
+    "deploy(khanh).to('your_team');",
 ];
 
 const skills = [
@@ -93,10 +97,7 @@ export function Hero() {
                             transition={{ duration: 0.6, delay: 0.5 }}
                             className="text-lg text-foreground-muted mb-8 leading-relaxed"
                         >
-                            I&apos;m a Junior Software Engineer working across frontend (React, Next.js), mobile
-                            (React Native, Flutter) and backend (Golang, .NET). I focus on clear business workflows,
-                            role-based access control (RBAC) and pragmatic DevOps (Docker, CI/CD) to keep products
-                            stable in production.
+                            Junior Software Engineer building frontend, mobile, and backend systems with a focus on business workflows and production stability.
                         </motion.p>
 
                         {/* CTA Buttons */}
@@ -165,7 +166,7 @@ export function Hero() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.6, delay: 1 }}
-                    className="absolute bottom-30 left-1/2 -translate-x-1/2"
+                    className="absolute bottom-20 left-1/2 -translate-x-1/2"
                 >
                     <motion.div
                         animate={{ y: [0, 8, 0] }}

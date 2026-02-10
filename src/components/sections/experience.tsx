@@ -11,9 +11,10 @@ const experiences = [
         role: "Software Engineer",
         period: "06/2025 – Present",
         description:
-            "Designing and implementing CRM dashboards and real-time communication features for thousands of users using Flutter Web and modern web technologies.",
+            "Designing and implementing CRM dashboards, wellness products (WellyTalk) and real-time communication features for thousands of users using Flutter Web and modern web technologies.",
         highlights: [
             "Architected CRM admin dashboard with Clean Architecture and BLoC",
+            "Built WellyTalk – a wellness chat & content platform on top of the same stack",
             "Integrated Centrifugo and chat SDK for real-time messaging",
             "Set up automated testing with Vitest (integration) and Cypress (E2E)",
         ],
@@ -23,8 +24,9 @@ const experiences = [
         role: "Software Engineer (Fresher)",
         period: "6 months",
         description:
-            "Worked on a housing service management ecosystem including a React Native mobile app and an internal admin web portal.",
+            "Contributed to a housing service management ecosystem with the Hinokiya mobile app and an internal admin web portal.",
         highlights: [
+            "Implemented core Hinokiya App flows for repair requests and housing services",
             "Built repair request workflows with real-time status tracking",
             "Implemented push notification flows for maintenance schedules",
             "Helped design .NET 6 APIs and error-handling conventions",

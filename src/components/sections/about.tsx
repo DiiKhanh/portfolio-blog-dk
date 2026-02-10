@@ -69,19 +69,40 @@ export function About() {
                         </p>
                     </ProCard>
 
-                    {/* Row 2: Stats Cards + Philosophy */}
-                    {stats.map((stat, index) => (
-                        <ProCard key={index} className="bento-item p-6 text-center">
-                            <stat.icon className="w-8 h-8 mx-auto mb-3 text-primary" />
-                            <div className="font-heading text-3xl font-bold mb-1 gradient-text">
-                                {stat.value}
-                            </div>
-                            <div className="text-sm text-foreground-muted">{stat.label}</div>
-                        </ProCard>
-                    ))}
+                    {/* Row 2: Compact Stats + Philosophy */}
+                    <ProCard className="bento-item span-2 p-5 md:p-6 flex flex-col gap-4">
+                        <div className="flex items-center justify-between gap-3">
+                            <h3 className="font-heading text-sm font-semibold tracking-wide text-foreground-muted uppercase">
+                                Quick stats
+                            </h3>
+                            <span className="text-xs rounded-full px-2 py-1 bg-primary/5 text-primary border border-primary/10">
+                                Early–career, real-world impact
+                            </span>
+                        </div>
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch sm:justify-between">
+                            {stats.map((stat, index) => (
+                                <div
+                                    key={index}
+                                    className="flex flex-1 items-center gap-3 rounded-lg bg-background/60 border border-border/60 px-3 py-2.5 sm:px-3.5 sm:py-3"
+                                >
+                                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+                                        <stat.icon className="w-4 h-4" />
+                                    </div>
+                                    <div className="text-left">
+                                        <div className="font-heading text-lg font-semibold leading-tight gradient-text">
+                                            {stat.value}
+                                        </div>
+                                        <div className="text-xs text-foreground-muted leading-snug">
+                                            {stat.label}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </ProCard>
 
                     {/* Philosophy Card */}
-                    <ProCard className="bento-item p-8">
+                    <ProCard className="bento-item span-2 p-8">
                         <h3 className="font-heading text-xl font-semibold mb-4">
                             What Drives Me
                         </h3>
