@@ -7,25 +7,40 @@ import { Building2, Calendar } from "lucide-react";
 
 const experiences = [
     {
-        company: "Tech Company A",
-        role: "Senior Software Engineer",
-        period: "2022 - Present",
-        description: "Leading frontend development for enterprise SaaS products. Architecting scalable React applications and mentoring junior developers.",
-        highlights: ["Led team of 5 engineers", "Improved performance by 40%", "Launched 3 major features"],
+        company: "StackTech",
+        role: "Software Engineer",
+        period: "06/2025 – Present",
+        description:
+            "Designing and implementing CRM dashboards and real-time communication features for thousands of users using Flutter Web and modern web technologies.",
+        highlights: [
+            "Architected CRM admin dashboard with Clean Architecture and BLoC",
+            "Integrated Centrifugo and chat SDK for real-time messaging",
+            "Set up automated testing with Vitest (integration) and Cypress (E2E)",
+        ],
     },
     {
-        company: "Startup B",
-        role: "Full Stack Developer",
-        period: "2020 - 2022",
-        description: "Built and maintained multiple web applications from scratch. Worked closely with product team to deliver user-centric solutions.",
-        highlights: ["Built MVP in 3 months", "Handled 100K+ users", "Integrated 10+ third-party APIs"],
+        company: "TGL Solutions",
+        role: "Software Engineer (Fresher)",
+        period: "6 months",
+        description:
+            "Worked on a housing service management ecosystem including a React Native mobile app and an internal admin web portal.",
+        highlights: [
+            "Built repair request workflows with real-time status tracking",
+            "Implemented push notification flows for maintenance schedules",
+            "Helped design .NET 6 APIs and error-handling conventions",
+        ],
     },
     {
-        company: "Agency C",
-        role: "Frontend Developer",
-        period: "2019 - 2020",
-        description: "Developed responsive websites and web applications for various clients across different industries.",
-        highlights: ["Delivered 20+ projects", "Client satisfaction 98%", "Reduced load time by 50%"],
+        company: "GEEK Up",
+        role: "Product Frontend Intern",
+        period: "06/2024 – 08/2024",
+        description:
+            "Joined a cross-functional product team to deliver a skills-support platform for Gen Z using modern React tooling and agile practices.",
+        highlights: [
+            "Developed reusable UI components with React, Refine and React Query",
+            "Participated in Design Sprints and product discovery",
+            "Delivered both admin panel and end-user web experience",
+        ],
     },
 ];
 
@@ -61,7 +76,7 @@ export function Experience() {
                                     }`}
                             >
                                 {/* Timeline Dot */}
-                                <div className="absolute left-0 md:left-1/2 w-3 h-3 rounded-full bg-primary/60 border-2 border-background shadow-[0_0_12px_rgba(0,217,255,0.5)] transform -translate-x-1/2 md:-translate-x-1/2 z-10" />
+                                {/* <div className="absolute left-0 md:left-1/2 w-3 h-3 rounded-full bg-primary/60 border-2 border-background shadow-[0_0_12px_rgba(0,217,255,0.5)] transform -translate-x-1/2 md:-translate-x-1/2 z-10" /> */}
 
                                 {/* Content */}
                                 <div className={`flex-1 pl-8 md:pl-0 ${index % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"}`}>

@@ -7,20 +7,20 @@ import { motion } from "framer-motion";
 
 const skillCategories = [
     {
-        title: "Frontend",
-        skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Vue.js"],
+        title: "Languages",
+        skills: ["JavaScript", "TypeScript", "Golang (Gin, Gorm)", "C# (.NET 6)", "Python"],
     },
     {
-        title: "Backend",
-        skills: ["Node.js", "Express", "NestJS", "Python", "PostgreSQL", "MongoDB"],
+        title: "Frontend & Mobile",
+        skills: ["Next.js", "React", "React Native", "Flutter (Clean Architecture, BLoC)"],
     },
     {
-        title: "Mobile",
-        skills: ["React Native", "Flutter", "iOS", "Android", "Expo"],
+        title: "Backend & Databases",
+        skills: ["RESTful APIs", "Golang APIs", "PostgreSQL", "MongoDB", "SQL Server"],
     },
     {
-        title: "DevOps & Tools",
-        skills: ["Docker", "AWS", "Git", "CI/CD", "Vercel", "Firebase"],
+        title: "DevOps & QA",
+        skills: ["Docker", "Docker Compose", "Nginx (Reverse Proxy)", "GitHub Actions (CI/CD)", "Vitest", "Cypress"],
     },
 ];
 
@@ -34,7 +34,7 @@ export function Skills() {
                         Tech <span className="gradient-text">Stack</span>
                     </h2>
                     <p className="section-subtitle mx-auto">
-                        Technologies and tools I work with daily
+                        Technologies and tools I use to build and ship products
                     </p>
                 </div>
 

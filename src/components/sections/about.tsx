@@ -6,9 +6,9 @@ import { Code, Briefcase, Coffee, MapPin } from "lucide-react";
 
 
 const stats = [
-    { icon: Code, value: "5+", label: "Years Experience" },
-    { icon: Briefcase, value: "30+", label: "Projects Completed" },
-    { icon: Coffee, value: "1000+", label: "Cups of Coffee" },
+    { icon: Code, value: "1+", label: "Years Coding Experience" },
+    { icon: Briefcase, value: "8+", label: "Real Projects Shipped" },
+    { icon: Coffee, value: "∞", label: "Late-night Debug Sessions" },
 ];
 
 export function About() {
@@ -21,7 +21,7 @@ export function About() {
                         About <span className="gradient-text">Me</span>
                     </h2>
                     <p className="section-subtitle mx-auto">
-                        A passionate developer who loves building things for the web
+                        Junior engineer blending frontend, mobile and backend to ship real-world products
                     </p>
                 </div>
 
@@ -61,10 +61,11 @@ export function About() {
                             My Journey
                         </h3>
                         <p className="text-foreground-muted leading-relaxed">
-                            I&apos;m a passionate Full Stack Developer with 5+ years of experience
-                            building web and mobile applications. I specialize in React, Next.js,
-                            and Node.js, with a strong focus on creating intuitive user experiences
-                            and scalable architectures.
+                            I&apos;m a Junior Software Engineer working across frontend, mobile and backend, with a strong
+                            interest in designing robust workflows, role-based access control (RBAC) and performance-friendly
+                            architectures. I&apos;m gradually expanding into DevOps (Docker, CI/CD) to better support scalable
+                            systems in production. I graduated in Information Systems from the University of Information Technology
+                            (UIT – VNUHCM) with a 3.5/4.0 GPA and have received multiple awards for student research and competitions.
                         </p>
                     </ProCard>
 
@@ -85,9 +86,10 @@ export function About() {
                             What Drives Me
                         </h3>
                         <p className="text-foreground-muted leading-relaxed">
-                            I believe in writing clean, maintainable code and building products
-                            that genuinely help people. Every project is an opportunity to learn
-                            something new and push the boundaries of what&apos;s possible on the web.
+                            I love turning messy real-world requirements into clear, reliable flows. For me,
+                            good engineering is a balance between clean architecture, pragmatic trade-offs
+                            and empathy for end users and teammates. Every project is a chance to learn,
+                            communicate better and raise the bar for quality.
                         </p>
                     </ProCard>
                 </div>
