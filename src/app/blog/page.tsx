@@ -1,11 +1,25 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Clock, Calendar, Tag } from "lucide-react";
 import { getAllPosts } from "@/lib/blog";
 import { LevelBadge } from "@/components/blog";
 
-export const metadata = {
-    title: "Blog | Khanh Pham",
-    description: "Tips, tutorials, and thoughts on software development",
+const SITE_URL = "https://portfolio-blog-dk.vercel.app";
+
+export const metadata: Metadata = {
+    title: "Blog",
+    description:
+        "Tips, tutorials, and deep dives into React, Next.js, TypeScript, Golang, and modern software development by Khanh Pham.",
+    openGraph: {
+        title: "Blog | Khanh Pham",
+        description:
+            "Tips, tutorials, and deep dives into React, Next.js, TypeScript, Golang, and modern software development.",
+        url: `${SITE_URL}/blog`,
+        type: "website",
+    },
+    alternates: {
+        canonical: `${SITE_URL}/blog`,
+    },
 };
 
 export default async function BlogPage() {

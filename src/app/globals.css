@@ -404,6 +404,29 @@ body {
   transform: translateY(-2px);
 }
 
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: transparent;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 15px;
+  border: 2px solid var(--primary);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-outline:hover {
+  background: var(--primary);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -8px var(--primary);
+}
+
 /* ============================================
    FOCUS STATES (Accessibility)
    ============================================ */

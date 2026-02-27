@@ -1,181 +1,209 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowDown, Github, Linkedin, Mail, Briefcase, Users } from "lucide-react";
+import {
+  ArrowDown,
+  Github,
+  Linkedin,
+  Mail,
+  Briefcase,
+  Users,
+  FileText,
+} from "lucide-react";
 import Link from "next/link";
 import { TerminalCode } from "@/components/ui/terminal-code";
 
 const codeLines = [
-    "import { Developer } from 'khanh-portfolio';",
-    "",
-    "const khanh: Developer = {",
-    "  name: 'Khanh Pham',",
-    "  role: 'Junior Software Engineer',",
-    "  stack: ['React', 'Next.js', 'Golang', 'Flutter'],",
-    "  focus: 'Designing reliable workflows & systems',",
-    "};",
-    "",
-    "deploy(khanh).to('your_team');",
+  "import { Developer } from 'khanh-portfolio';",
+  "",
+  "const khanh: Developer = {",
+  "  name: 'Khanh Pham',",
+  "  role: 'Junior Software Engineer',",
+  "  stack: ['React', 'Next.js', 'Golang', 'Flutter'],",
+  "  focus: 'Designing reliable workflows & systems',",
+  "};",
+  "",
+  "deploy(khanh).to('your_team');",
 ];
 
 const skills = [
-    "React & Next.js",
-    "TypeScript",
-    "React Native & Flutter",
-    "Golang & .NET 6",
-    "RESTful APIs & RBAC",
-    "Docker & CI/CD",
+  "React & Next.js",
+  "TypeScript",
+  "React Native & Flutter",
+  "Golang & .NET 6",
+  "RESTful APIs & RBAC",
+  "Docker & CI/CD",
 ];
 
 export function Hero() {
-    return (
-        <section className="relative min-h-screen flex items-center justify-center section pt-32 pb-20">
-            <div className="max-w-6xl mx-auto w-full">
-                {/* 2-Column Grid Layout */}
-                <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-                    {/* Left Column: Content */}
-                    <div>
-                        {/* Status Badge with Avatar placeholder */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                            className="mb-8 flex items-center gap-3"
-                        >
-                            {/* Avatar with hover effects */}
-                            <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-primary/30 transition-all duration-300 hover:scale-110 hover:border-primary hover:shadow-lg hover:shadow-primary/50 group cursor-pointer">
-                                {/* Rotating gradient border effect on hover */}
-                                <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-linear-to-r from-primary via-accent to-secondary animate-spin-slow" style={{ padding: '2px' }}>
-                                    <div className="absolute inset-[2px] rounded-full bg-background" />
-                                </div>
-                                {/* Avatar content */}
-                                <div className="absolute inset-0 bg-linear-to-br from-primary/40 via-accent/30 to-secondary/40 z-10" />
-                                <div className="absolute inset-0 flex items-center justify-center z-20">
-                                    <span className="text-xl font-heading font-bold text-white/80">KP</span>
-                                </div>
-                            </div>
-                            {/* Badge */}
-                            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-foreground-muted">
-                                Junior Engineer Crafting Web & Mobile Solutions
-                            </span>
-                        </motion.div>
-
-                        {/* Main Heading */}
-                        <motion.h1
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.3 }}
-                            className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4"
-                        >
-                            Hi, I'm <span className="gradient-text-animate">Khanh Pham</span>
-                        </motion.h1>
-
-                        {/* Subtitle */}
-                        <motion.p
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.4 }}
-                            className="text-xl md:text-2xl text-foreground-muted font-medium mb-3"
-                        >
-                            Junior Software Engineer | Web, Mobile & Backend
-                        </motion.p>
-
-                        {/* Small tagline */}
-                        <motion.p
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.45 }}
-                            className="text-base text-foreground-muted/70 mb-6 italic"
-                        >
-                            I design reliable workflows, not just beautiful screens
-                        </motion.p>
-
-                        {/* Description */}
-                        <motion.p
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.5 }}
-                            className="text-lg text-foreground-muted mb-8 leading-relaxed"
-                        >
-                            Junior Software Engineer building frontend, mobile, and backend systems with a focus on business workflows and production stability.
-                        </motion.p>
-
-                        {/* CTA Buttons */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.6 }}
-                            className="flex flex-wrap items-center gap-4 mb-8"
-                        >
-                            <Link href="#projects" className="btn-primary">
-                                View My Work
-                            </Link>
-                            <Link href="#contact" className="btn-secondary">
-                                Get in Touch
-                            </Link>
-                        </motion.div>
-
-                        {/* Stats Badges */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.7 }}
-                            className="flex flex-wrap items-center gap-4 mb-8"
-                        >
-                            <div className="flex items-center gap-2 px-4 py-2 rounded-lg glass">
-                                <Briefcase className="w-4 h-4 text-primary" />
-                                <span className="text-sm font-medium">1+ Years Coding Experience</span>
-                            </div>
-                            <div className="flex items-center gap-2 px-4 py-2 rounded-lg glass">
-                                <Users className="w-4 h-4 text-accent" />
-                                <span className="text-sm font-medium">30+ Projects Delivered</span>
-                            </div>
-                        </motion.div>
-
-                        {/* Skills Tags */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.8 }}
-                            className="flex flex-wrap gap-2"
-                        >
-                            {skills.map((skill, index) => (
-                                <span
-                                    key={index}
-                                    className="px-3 py-1.5 text-xs font-medium rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors"
-                                >
-                                    {skill}
-                                </span>
-                            ))}
-                        </motion.div>
-                    </div>
-
-                    {/* Right Column: Terminal Code */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.6, delay: 0.5 }}
-                        className="hidden lg:block"
-                    >
-                        <TerminalCode title="dk.ts" lines={codeLines} />
-                    </motion.div>
-                </div>
-
-                {/* Scroll Indicator */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.6, delay: 1 }}
-                    className="absolute bottom-20 left-1/2 -translate-x-1/2"
+  return (
+    <section className="relative min-h-screen flex items-center justify-center section pt-32 pb-20">
+      <div className="max-w-6xl mx-auto w-full">
+        {/* 2-Column Grid Layout */}
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left Column: Content */}
+          <div>
+            {/* Status Badge with Avatar placeholder */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="mb-8 flex items-center gap-3"
+            >
+              {/* Avatar with hover effects */}
+              <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-primary/30 transition-all duration-300 hover:scale-110 hover:border-primary hover:shadow-lg hover:shadow-primary/50 group cursor-pointer">
+                {/* Rotating gradient border effect on hover */}
+                <div
+                  className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-linear-to-r from-primary via-accent to-secondary animate-spin-slow"
+                  style={{ padding: "2px" }}
                 >
-                    <motion.div
-                        animate={{ y: [0, 8, 0] }}
-                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                    >
-                        <ArrowDown className="w-6 h-6 text-foreground-muted" />
-                    </motion.div>
-                </motion.div>
-            </div>
-        </section>
-    );
+                  <div className="absolute inset-[2px] rounded-full bg-background" />
+                </div>
+                {/* Avatar content */}
+                <div className="absolute inset-0 bg-linear-to-br from-primary/40 via-accent/30 to-secondary/40 z-10" />
+                <div className="absolute inset-0 flex items-center justify-center z-20">
+                  <span className="text-xl font-heading font-bold text-white/80">
+                    KP
+                  </span>
+                </div>
+              </div>
+              {/* Badge */}
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-foreground-muted">
+                Junior Engineer Crafting Web & Mobile Solutions
+              </span>
+            </motion.div>
+
+            {/* Main Heading */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4"
+            >
+              Hi, I'm <span className="gradient-text-animate">Khanh Pham</span>
+            </motion.h1>
+
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="text-xl md:text-2xl text-foreground-muted font-medium mb-3"
+            >
+              Junior Software Engineer | Web, Mobile & Backend
+            </motion.p>
+
+            {/* Small tagline */}
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.45 }}
+              className="text-base text-foreground-muted/70 mb-6 italic"
+            >
+              I design reliable workflows, not just beautiful screens
+            </motion.p>
+
+            {/* Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="text-lg text-foreground-muted mb-8 leading-relaxed"
+            >
+              Junior Software Engineer building frontend, mobile, and backend
+              systems with a focus on business workflows and production
+              stability.
+            </motion.p>
+
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="flex flex-wrap items-center gap-4 mb-8"
+            >
+              <Link href="#projects" className="btn-primary">
+                View My Work
+              </Link>
+              <Link href="#contact" className="btn-secondary">
+                Get in Touch
+              </Link>
+              <a
+                href="/PhamDuyKhanh.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline"
+              >
+                <FileText className="w-4 h-4" />
+                View CV
+              </a>
+            </motion.div>
+
+            {/* Stats Badges */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              className="flex flex-wrap items-center gap-4 mb-8"
+            >
+              <div className="flex items-center gap-2 px-4 py-2 rounded-lg glass">
+                <Briefcase className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium">
+                  1+ Years Coding Experience
+                </span>
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-lg glass">
+                <Users className="w-4 h-4 text-accent" />
+                <span className="text-sm font-medium">
+                  30+ Projects Delivered
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Skills Tags */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="flex flex-wrap gap-2"
+            >
+              {skills.map((skill, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1.5 text-xs font-medium rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors"
+                >
+                  {skill}
+                </span>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Right Column: Terminal Code */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="hidden lg:block"
+          >
+            <TerminalCode title="dk.ts" lines={codeLines} />
+          </motion.div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 1 }}
+          className="absolute bottom-20 left-1/2 -translate-x-1/2"
+        >
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ArrowDown className="w-6 h-6 text-foreground-muted" />
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
 }

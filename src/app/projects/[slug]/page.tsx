@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,6 +8,8 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { ProCard } from "@/components/ui/pro-card";
 import { ClayBadge } from "@/components/ui/clay-badge";
 import { getProjectBySlug, projects } from "@/lib/projects";
+
+const SITE_URL = "https://portfolio-blog-dk.vercel.app";
 
 type ProjectPageProps = {
   params: Promise<{
@@ -18,6 +21,48 @@ export function generateStaticParams() {
   return projects.map((project) => ({
     slug: project.slug,
   }));
+}
+
+export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const project = getProjectBySlug(slug);
+
+  if (!project) {
+    return {
+      title: "Project Not Found",
+    };
+  }
+
+  const projectUrl = `${SITE_URL}/projects/${slug}`;
+
+  return {
+    title: project.title,
+    description: project.description,
+    keywords: project.tech,
+    openGraph: {
+      title: `${project.title} | Khanh Pham`,
+      description: project.description,
+      url: projectUrl,
+      type: "article",
+      images: [
+        {
+          url: project.image,
+          width: 1200,
+          height: 630,
+          alt: project.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.title,
+      description: project.description,
+      images: [project.image],
+    },
+    alternates: {
+      canonical: projectUrl,
+    },
+  };
 }
 
 export default async function ProjectDetailPage({ params }: ProjectPageProps) {

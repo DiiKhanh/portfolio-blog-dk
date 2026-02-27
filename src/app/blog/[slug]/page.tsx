@@ -1,9 +1,12 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Clock, Calendar } from "lucide-react";
 import { getAllPosts, getPostBySlug, getCourseMetadata } from "@/lib/blog";
 import { GlassSidebar, LevelBadge, MDXComponents } from "@/components/blog";
 import { MDXRemote } from "next-mdx-remote/rsc";
+
+const SITE_URL = "https://portfolio-blog-dk.vercel.app";
 
 interface PageProps {
     params: Promise<{ slug: string }>;
@@ -16,7 +19,7 @@ export async function generateStaticParams() {
     }));
 }
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { slug } = await params;
     const post = await getPostBySlug(slug);
 
@@ -26,9 +29,38 @@ export async function generateMetadata({ params }: PageProps) {
         };
     }
 
+    const postUrl = `${SITE_URL}/blog/${slug}`;
+
     return {
-        title: `${post.title} | Khanh Pham Blog`,
+        title: post.title,
         description: post.description,
+        keywords: post.tags,
+        openGraph: {
+            title: `${post.title} | Khanh Pham Blog`,
+            description: post.description,
+            url: postUrl,
+            type: "article",
+            publishedTime: post.date,
+            authors: ["Khanh Pham"],
+            tags: post.tags,
+            images: [
+                {
+                    url: "/og-image.png",
+                    width: 1200,
+                    height: 630,
+                    alt: post.title,
+                },
+            ],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: post.title,
+            description: post.description,
+            images: ["/og-image.png"],
+        },
+        alternates: {
+            canonical: postUrl,
+        },
     };
 }
 
@@ -50,6 +82,27 @@ export default async function BlogPostPage({ params }: PageProps) {
 
     return (
         <main className="min-h-screen relative z-10">
+            {/* Article JSON-LD */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "Article",
+                        headline: post.title,
+                        description: post.description,
+                        author: {
+                            "@type": "Person",
+                            name: "Khanh Pham",
+                            url: SITE_URL,
+                        },
+                        datePublished: post.date,
+                        url: `${SITE_URL}/blog/${slug}`,
+                        keywords: post.tags?.join(", "),
+                        image: `${SITE_URL}/og-image.png`,
+                    }),
+                }}
+            />
             {/* Sidebar for course posts */}
             {hasSidebar && courseMetadata && (
                 <GlassSidebar
