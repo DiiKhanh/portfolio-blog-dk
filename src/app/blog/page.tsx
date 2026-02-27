@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { Clock, Calendar, Tag } from "lucide-react";
 import { getAllPosts } from "@/lib/blog";
-import { LevelBadge } from "@/components/blog";
+import { LevelBadge, BlogFilter } from "@/components/blog";
 
 const SITE_URL = "https://portfolio-blog-dk.vercel.app";
 
@@ -22,32 +23,68 @@ export const metadata: Metadata = {
     },
 };
 
-export default async function BlogPage() {
-    const posts = await getAllPosts();
+interface BlogPageProps {
+    searchParams: Promise<{ category?: string; tag?: string }>;
+}
+
+export default async function BlogPage({ searchParams }: BlogPageProps) {
+    const { category = "", tag = "" } = await searchParams;
+    const allPosts = await getAllPosts();
+
+    // Collect all unique tags
+    const allTags = Array.from(
+        new Set(allPosts.flatMap((p) => p.tags ?? []))
+    ).sort();
+
+    // Filter posts
+    const posts = allPosts.filter((post) => {
+        if (category && post.category !== category) return false;
+        if (tag && !post.tags?.includes(tag)) return false;
+        return true;
+    });
 
     return (
         <main className="min-h-screen relative z-10">
-            {/* Header with gradient background */}
+            {/* Header */}
             <header className="relative py-16 px-6 overflow-hidden">
-                {/* Gradient background */}
                 <div className="absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-accent/10 pointer-events-none" aria-hidden="true" />
-
                 <div className="max-w-6xl mx-auto relative z-10 mt-10">
                     <h1 className="brutalist-heading text-6xl md:text-7xl mb-4">Blog</h1>
-                    <p className="text-xl text-foreground-muted max-w-3xl leading-relaxed">
+                    <p className="text-xl text-foreground-muted max-w-3xl leading-relaxed mb-8">
                         Tips, tutorials, and deep dives into software development, React, and modern web technologies.
                     </p>
+
+                    {/* Filter controls */}
+                    <Suspense fallback={null}>
+                        <BlogFilter
+                            allTags={allTags}
+                            selectedCategory={category}
+                            selectedTag={tag}
+                        />
+                    </Suspense>
                 </div>
             </header>
 
             {/* Posts Grid */}
-            <section className="py-16 px-6">
+            <section className="py-8 px-6">
                 <div className="max-w-6xl mx-auto">
+                    {/* Result count */}
+                    <p className="text-sm text-foreground-muted mb-6">
+                        {posts.length === allPosts.length
+                            ? `${posts.length} posts`
+                            : `${posts.length} of ${allPosts.length} posts`}
+                        {tag && <span> tagged <strong className="text-foreground">{tag}</strong></span>}
+                        {category && <span> in <strong className="text-foreground capitalize">{category}</strong></span>}
+                    </p>
+
                     {posts.length === 0 ? (
                         <div className="text-center py-20">
-                            <p className="text-foreground-muted text-lg">
-                                No posts yet. Check back soon!
+                            <p className="text-foreground-muted text-lg mb-4">
+                                No posts match your filters.
                             </p>
+                            <Link href="/blog" className="text-primary hover:underline text-sm">
+                                Clear filters
+                            </Link>
                         </div>
                     ) : (
                         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
@@ -60,12 +97,12 @@ export default async function BlogPage() {
                                     {/* Meta info */}
                                     <div className="flex items-center gap-3 mb-4 flex-wrap">
                                         {post.level && <LevelBadge level={post.level} />}
-                                        {post.tags?.slice(0, 2).map((tag) => (
+                                        {post.tags?.slice(0, 2).map((t) => (
                                             <span
-                                                key={tag}
+                                                key={t}
                                                 className="clay-badge text-xs px-3 py-1"
                                             >
-                                                {tag}
+                                                {t}
                                             </span>
                                         ))}
                                     </div>

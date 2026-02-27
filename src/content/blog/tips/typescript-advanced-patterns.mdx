@@ -1,0 +1,254 @@
+---
+title: "Advanced TypeScript Patterns for React"
+description: "Level up your React + TypeScript skills with discriminated unions, conditional types, template literal types, and mapped types."
+date: "2026-02-15"
+level: "advanced"
+tags: ["TypeScript", "React", "Patterns"]
+---
+
+# Advanced TypeScript Patterns for React
+
+Beyond basic prop typing, TypeScript has a suite of advanced features that transform how you model UI state. This post covers patterns I use in production React apps every day.
+
+## Discriminated Unions for Component Variants
+
+The most valuable pattern for UI components. Instead of optional props, use a **union with a discriminant field**:
+
+```tsx
+// ❌ Fragile — misleading optional props
+interface ButtonProps {
+  variant: "primary" | "destructive" | "link";
+  href?: string;       // only for "link"
+  onClick?: () => void; // only for "primary"/"destructive"
+}
+
+// ✅ Explicit — each variant is its own type
+type ButtonProps =
+  | { variant: "primary"; onClick: () => void; disabled?: boolean }
+  | { variant: "destructive"; onClick: () => void; confirmText?: string }
+  | { variant: "link"; href: string; external?: boolean };
+
+function Button(props: ButtonProps) {
+  if (props.variant === "link") {
+    // TypeScript knows props.href exists here
+    return <a href={props.href}>{/* ... */}</a>;
+  }
+  // TypeScript knows props.onClick exists here
+  return <button onClick={props.onClick}>{/* ... */}</button>;
+}
+```
+
+Now calling `<Button variant="link" onClick={fn} />` is a compile error.
+
+## Discriminated Unions for State Machines
+
+This pattern is perfect for async UI state:
+
+```tsx
+type RequestState<T> =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "success"; data: T }
+  | { status: "error"; error: Error };
+
+function UserProfile() {
+  const [state, setState] = useState<RequestState<User>>({ status: "idle" });
+
+  // In the render:
+  if (state.status === "loading") return <Spinner />;
+  if (state.status === "error") return <ErrorMessage error={state.error} />;
+  if (state.status === "success") return <Profile user={state.data} />;
+  return <button onClick={fetchUser}>Load Profile</button>;
+}
+```
+
+No more `isLoading && !error && data` pyramids. Each branch narrows the type perfectly.
+
+## Template Literal Types
+
+Create precise string union types from combinations:
+
+```ts
+type Direction = "top" | "right" | "bottom" | "left";
+type Alignment = "start" | "center" | "end";
+
+// Generates all 12 combinations
+type Placement = `${Direction}-${Alignment}`;
+// "top-start" | "top-center" | "top-end" | "right-start" | ...
+
+// Type-safe CSS class generator
+type Color = "red" | "green" | "blue" | "gray";
+type Shade = "100" | "200" | "300" | "400" | "500";
+type TailwindColor = `${Color}-${Shade}`;
+
+function getTextColor(color: TailwindColor): string {
+  return `text-${color}`;
+}
+
+getTextColor("blue-500"); // ✅
+getTextColor("purple-500"); // ❌ compile error
+```
+
+### Event Handler Naming
+
+```ts
+type EventName = "click" | "focus" | "blur" | "change";
+type HandlerName = `on${Capitalize<EventName>}`;
+// "onClick" | "onFocus" | "onBlur" | "onChange"
+```
+
+## Mapped Types for Component Systems
+
+Build an entire design system's types programmatically:
+
+```ts
+const sizes = ["xs", "sm", "md", "lg", "xl"] as const;
+type Size = (typeof sizes)[number];
+
+// Generate size-based class mappings
+type SizeClassMap = {
+  [S in Size]: string;
+};
+
+const textSizes: SizeClassMap = {
+  xs: "text-xs",
+  sm: "text-sm",
+  md: "text-base",
+  lg: "text-lg",
+  xl: "text-xl",
+};
+```
+
+### Transform Prop Types
+
+```ts
+// Make all event handlers optional and typed
+type WithOptionalHandlers<T extends HTMLElement> = {
+  [K in keyof React.HTMLProps<T> as K extends `on${string}`
+    ? K
+    : never]?: React.HTMLProps<T>[K];
+};
+```
+
+## `infer` for Extracting Types
+
+Use `infer` to extract types from complex structures:
+
+```ts
+// Extract the resolved type of a Promise
+type Awaited<T> = T extends Promise<infer U> ? U : T;
+
+// Extract the return type of an async function
+type AsyncReturnType<T extends (...args: any) => Promise<any>> =
+  T extends (...args: any) => Promise<infer R> ? R : never;
+
+async function fetchUser(): Promise<{ id: number; name: string }> {
+  return fetch("/api/user").then((r) => r.json());
+}
+
+type User = AsyncReturnType<typeof fetchUser>;
+// { id: number; name: string }
+```
+
+This lets you derive types from implementations — not the other way around.
+
+## Strongly Typed `useReducer`
+
+Combine discriminated unions with `useReducer` for iron-clad state machines:
+
+```tsx
+type State = {
+  count: number;
+  history: number[];
+};
+
+type Action =
+  | { type: "increment"; amount?: number }
+  | { type: "decrement"; amount?: number }
+  | { type: "reset" }
+  | { type: "undo" };
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "increment":
+      return {
+        count: state.count + (action.amount ?? 1),
+        history: [...state.history, state.count],
+      };
+    case "decrement":
+      return {
+        count: state.count - (action.amount ?? 1),
+        history: [...state.history, state.count],
+      };
+    case "reset":
+      return { count: 0, history: [] };
+    case "undo":
+      const prev = state.history.at(-1) ?? 0;
+      return {
+        count: prev,
+        history: state.history.slice(0, -1),
+      };
+  }
+}
+```
+
+TypeScript ensures you handle every action case.
+
+## Satisfies Operator (TypeScript 4.9+)
+
+The `satisfies` operator validates a value against a type without widening it:
+
+```ts
+const palette = {
+  red: [255, 0, 0],
+  green: "#00ff00",
+  blue: [0, 0, 255],
+} satisfies Record<string, string | number[]>;
+
+// With `as`, TypeScript widens the type — you lose specifics
+// With `satisfies`, TypeScript validates but keeps the literal types
+palette.red.map(/* works — red is still number[] */);
+palette.green.toUpperCase(/* works — green is still string */);
+```
+
+## Polymorphic Components with `as`
+
+The hardest pattern to get right — a component that renders as different HTML elements:
+
+```tsx
+type AsProp<C extends React.ElementType> = {
+  as?: C;
+};
+
+type PropsWithAs<C extends React.ElementType, Props = {}> = Props &
+  AsProp<C> &
+  Omit<React.ComponentPropsWithoutRef<C>, keyof (Props & AsProp<C>)>;
+
+function Text<C extends React.ElementType = "p">({
+  as,
+  children,
+  ...props
+}: PropsWithAs<C, { children: React.ReactNode }>) {
+  const Component = as || "p";
+  return <Component {...props}>{children}</Component>;
+}
+
+// Usage
+<Text>Renders as p</Text>
+<Text as="h1" className="title">Renders as h1, gets h1's props</Text>
+<Text as="span">Renders as span</Text>
+<Text as="a" href="/about">Renders as a, href is valid!</Text>
+```
+
+---
+
+## Key Takeaways
+
+- **Discriminated unions** eliminate impossible states in components and reducers
+- **Template literal types** generate exhaustive string unions at compile time
+- **Mapped types** let you build entire type systems programmatically
+- **`infer`** extracts types from complex structures — derive types from implementations
+- **`satisfies`** validates without losing literal type information
+- **Polymorphic components** require work upfront but enable truly flexible APIs
+
+These patterns take your TypeScript from "JavaScript with types" to a genuinely powerful tool for modeling your domain.

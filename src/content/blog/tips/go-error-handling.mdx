@@ -1,0 +1,327 @@
+---
+title: "Idiomatic Error Handling in Go"
+description: "Go's approach to error handling is simple but powerful. Learn how to wrap errors, define custom types, use errors.Is and errors.As, and build resilient APIs."
+date: "2026-01-20"
+level: "intermediate"
+tags: ["Go", "Error Handling", "Best Practices"]
+---
+
+# Idiomatic Error Handling in Go
+
+Error handling in Go is explicit by design. There are no exceptions — errors are values, returned like any other result. This might feel verbose at first, but it forces you to think about failure paths, making your code more resilient.
+
+## Errors Are Values
+
+The `error` interface is just:
+
+```go
+type error interface {
+    Error() string
+}
+```
+
+Any type implementing `Error() string` is an error. Functions return errors as the last return value:
+
+```go
+func divide(a, b float64) (float64, error) {
+    if b == 0 {
+        return 0, errors.New("division by zero")
+    }
+    return a / b, nil
+}
+
+result, err := divide(10, 0)
+if err != nil {
+    log.Printf("error: %v", err)
+    return
+}
+fmt.Println(result)
+```
+
+The convention is always: **check errors immediately, handle them explicitly**.
+
+## `fmt.Errorf` and Error Wrapping
+
+Use `fmt.Errorf` with `%w` to wrap errors, preserving the original:
+
+```go
+func readConfig(path string) (*Config, error) {
+    data, err := os.ReadFile(path)
+    if err != nil {
+        return nil, fmt.Errorf("readConfig: %w", err)
+    }
+
+    var cfg Config
+    if err := json.Unmarshal(data, &cfg); err != nil {
+        return nil, fmt.Errorf("readConfig: parse JSON: %w", err)
+    }
+
+    return &cfg, nil
+}
+```
+
+The `%w` verb wraps the error so callers can inspect it with `errors.Is` and `errors.As`.
+
+### Error Message Conventions
+
+- Use lowercase, no trailing punctuation: `"open file"` not `"Failed to open file."`
+- Chain context with `: `: `"readConfig: open file: permission denied"`
+- Don't include "error" in the message — the context already implies it
+
+## `errors.Is` — Checking Error Identity
+
+`errors.Is` walks the error chain and checks if any error in the chain matches a **sentinel value**:
+
+```go
+var ErrNotFound = errors.New("not found")
+var ErrForbidden = errors.New("forbidden")
+
+func getUser(id int) (*User, error) {
+    if id <= 0 {
+        return nil, fmt.Errorf("getUser: %w", ErrNotFound)
+    }
+    // ...
+}
+
+user, err := getUser(-1)
+if errors.Is(err, ErrNotFound) {
+    // Handle not found — could be wrapped multiple levels deep
+    http.Error(w, "user not found", http.StatusNotFound)
+    return
+}
+```
+
+Compare to `err == ErrNotFound` — that only works if the error isn't wrapped. `errors.Is` handles wrapping correctly.
+
+## `errors.As` — Extracting Error Types
+
+`errors.As` walks the chain and extracts a specific error type if found:
+
+```go
+type ValidationError struct {
+    Field   string
+    Message string
+}
+
+func (e *ValidationError) Error() string {
+    return fmt.Sprintf("validation failed for %s: %s", e.Field, e.Message)
+}
+
+func validateUser(u User) error {
+    if u.Email == "" {
+        return fmt.Errorf("validateUser: %w", &ValidationError{
+            Field:   "email",
+            Message: "is required",
+        })
+    }
+    return nil
+}
+
+if err := validateUser(u); err != nil {
+    var ve *ValidationError
+    if errors.As(err, &ve) {
+        // Access structured error fields
+        fmt.Printf("Field: %s, Problem: %s\n", ve.Field, ve.Message)
+    }
+}
+```
+
+This lets you attach structured data to errors without losing the wrapping chain.
+
+## Sentinel Errors
+
+Define sentinel errors for conditions callers need to handle specifically:
+
+```go
+package store
+
+import "errors"
+
+var (
+    ErrNotFound   = errors.New("not found")
+    ErrConflict   = errors.New("conflict")
+    ErrForbidden  = errors.New("forbidden")
+)
+
+func (s *UserStore) Get(ctx context.Context, id int64) (*User, error) {
+    row := s.db.QueryRowContext(ctx, "SELECT * FROM users WHERE id = $1", id)
+    var u User
+    if err := row.Scan(&u.ID, &u.Name, &u.Email); err != nil {
+        if errors.Is(err, sql.ErrNoRows) {
+            return nil, fmt.Errorf("user %d: %w", id, ErrNotFound)
+        }
+        return nil, fmt.Errorf("query user %d: %w", id, err)
+    }
+    return &u, nil
+}
+```
+
+The handler maps sentinel errors to HTTP status codes:
+
+```go
+func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request) {
+    id := parseID(r)
+    user, err := h.store.Get(r.Context(), id)
+    if err != nil {
+        switch {
+        case errors.Is(err, store.ErrNotFound):
+            writeError(w, http.StatusNotFound, "user not found")
+        case errors.Is(err, store.ErrForbidden):
+            writeError(w, http.StatusForbidden, "access denied")
+        default:
+            log.Printf("unexpected error: %v", err)
+            writeError(w, http.StatusInternalServerError, "internal error")
+        }
+        return
+    }
+    writeJSON(w, http.StatusOK, user)
+}
+```
+
+## Custom Error Types
+
+For richer error information, define a struct:
+
+```go
+type AppError struct {
+    Code    string
+    Message string
+    Err     error // wrapped original error
+}
+
+func (e *AppError) Error() string {
+    if e.Err != nil {
+        return fmt.Sprintf("[%s] %s: %v", e.Code, e.Message, e.Err)
+    }
+    return fmt.Sprintf("[%s] %s", e.Code, e.Message)
+}
+
+func (e *AppError) Unwrap() error {
+    return e.Err // allows errors.Is/As to traverse the chain
+}
+
+// Constructor helpers
+func NotFound(msg string, err error) *AppError {
+    return &AppError{Code: "NOT_FOUND", Message: msg, Err: err}
+}
+
+func InvalidInput(msg string) *AppError {
+    return &AppError{Code: "INVALID_INPUT", Message: msg}
+}
+```
+
+## Error Handling Patterns
+
+### Early Return
+
+Prefer early returns to deeply nested error checks:
+
+```go
+// ❌ Nested — hard to read
+func process(id int) error {
+    user, err := getUser(id)
+    if err == nil {
+        data, err := fetchData(user)
+        if err == nil {
+            result, err := transform(data)
+            if err == nil {
+                return save(result)
+            }
+            return err
+        }
+        return err
+    }
+    return err
+}
+
+// ✅ Early return — clean and linear
+func process(id int) error {
+    user, err := getUser(id)
+    if err != nil {
+        return fmt.Errorf("process: get user: %w", err)
+    }
+
+    data, err := fetchData(user)
+    if err != nil {
+        return fmt.Errorf("process: fetch data: %w", err)
+    }
+
+    result, err := transform(data)
+    if err != nil {
+        return fmt.Errorf("process: transform: %w", err)
+    }
+
+    return save(result)
+}
+```
+
+### Defer for Cleanup
+
+```go
+func copyFile(src, dst string) (err error) {
+    srcFile, err := os.Open(src)
+    if err != nil {
+        return fmt.Errorf("open source: %w", err)
+    }
+    defer srcFile.Close()
+
+    dstFile, err := os.Create(dst)
+    if err != nil {
+        return fmt.Errorf("create destination: %w", err)
+    }
+    defer func() {
+        if closeErr := dstFile.Close(); closeErr != nil && err == nil {
+            err = fmt.Errorf("close destination: %w", closeErr)
+        }
+    }()
+
+    if _, err = io.Copy(dstFile, srcFile); err != nil {
+        return fmt.Errorf("copy: %w", err)
+    }
+
+    return nil
+}
+```
+
+Note the named return value `err` — the deferred function can modify it.
+
+## Logging Errors Correctly
+
+Log with full context at the boundary where the error is handled (usually the top-level handler), not at every level:
+
+```go
+// ❌ Log at every level — duplicate noise
+func getUser(id int) (*User, error) {
+    u, err := db.Query(id)
+    if err != nil {
+        log.Printf("db error: %v", err)  // don't log here
+        return nil, err
+    }
+    return u, nil
+}
+
+// ✅ Log once at the handler
+func handleGetUser(w http.ResponseWriter, r *http.Request) {
+    user, err := getUser(id)
+    if err != nil {
+        log.Printf("handleGetUser id=%d: %v", id, err) // log with context here
+        http.Error(w, "internal error", 500)
+        return
+    }
+    writeJSON(w, 200, user)
+}
+```
+
+---
+
+## Key Takeaways
+
+- Errors are values — return them, don't hide them
+- Use `fmt.Errorf("context: %w", err)` to add context while preserving the chain
+- Use `errors.Is` for checking sentinel errors (works through wrapping)
+- Use `errors.As` for extracting typed errors from the chain
+- Define sentinel errors in your package for conditions callers need to distinguish
+- Prefer early returns over nested error checks
+- Log errors once at the top boundary, not at every layer
+
+Go's error handling forces you to confront failure at every step — and that's a feature, not a bug. Explicit error handling makes codebases far easier to understand and debug.

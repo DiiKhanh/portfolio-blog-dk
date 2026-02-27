@@ -1,0 +1,251 @@
+---
+title: "Mastering TypeScript Generics"
+description: "A deep dive into TypeScript generics — from basic functions to advanced constraints, utility types, and real-world patterns you can use today."
+date: "2026-02-10"
+level: "intermediate"
+tags: ["TypeScript", "Generics", "Type Safety"]
+---
+
+# Mastering TypeScript Generics
+
+Generics are one of the most powerful features in TypeScript, yet many developers either avoid them or reach for `any` instead. This post will show you that generics are not just academic — they're the key to writing reusable, type-safe code.
+
+## What Are Generics?
+
+A generic is a **type parameter** — a placeholder for a type that gets filled in when the function or class is used. Think of it like a variable, but for types.
+
+```ts
+// Without generics — we lose type info
+function identity(value: any): any {
+  return value;
+}
+
+// With generics — the type is preserved
+function identity<T>(value: T): T {
+  return value;
+}
+
+const str = identity("hello"); // type: string
+const num = identity(42);      // type: number
+```
+
+The `<T>` is the type parameter. TypeScript infers `T` from the argument you pass in.
+
+## Generic Functions
+
+The most common use case is wrapping data in a consistent shape:
+
+```ts
+function wrap<T>(value: T): { data: T; timestamp: number } {
+  return {
+    data: value,
+    timestamp: Date.now(),
+  };
+}
+
+const wrapped = wrap({ name: "Khanh" });
+// wrapped.data is inferred as { name: string }
+```
+
+You can also use multiple type parameters when inputs and outputs differ:
+
+```ts
+function mapArray<T, U>(items: T[], transform: (item: T) => U): U[] {
+  return items.map(transform);
+}
+
+const lengths = mapArray(["hello", "world"], (s) => s.length);
+// lengths: number[]
+```
+
+## Generic Constraints with `extends`
+
+Sometimes you need a generic to be a **subtype** of something. Use `extends` to add constraints:
+
+```ts
+// T must have a .length property
+function longest<T extends { length: number }>(a: T, b: T): T {
+  return a.length >= b.length ? a : b;
+}
+
+longest("hello", "hi");     // ✅ strings have .length
+longest([1, 2], [3]);       // ✅ arrays have .length
+longest(10, 20);            // ❌ numbers don't have .length
+```
+
+### Constraining with `keyof`
+
+A common pattern for object access:
+
+```ts
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+
+const user = { name: "Khanh", age: 30, active: true };
+const name = getProperty(user, "name");   // type: string
+const age = getProperty(user, "age");     // type: number
+getProperty(user, "email");               // ❌ compile error
+```
+
+This is much safer than using `(obj as any)[key]`.
+
+## Generic Interfaces and Types
+
+Generics aren't limited to functions — use them in interfaces:
+
+```ts
+interface ApiResponse<T> {
+  data: T;
+  status: number;
+  message: string;
+}
+
+interface PaginatedResponse<T> extends ApiResponse<T[]> {
+  page: number;
+  total: number;
+  hasMore: boolean;
+}
+
+// Usage
+const userResponse: ApiResponse<{ id: number; name: string }> = {
+  data: { id: 1, name: "Khanh" },
+  status: 200,
+  message: "OK",
+};
+```
+
+## Utility Types Under the Hood
+
+TypeScript's built-in utility types are implemented using generics. Understanding how they work helps you build your own:
+
+```ts
+// Partial makes all properties optional
+type Partial<T> = {
+  [P in keyof T]?: T[P];
+};
+
+// Readonly makes all properties read-only
+type Readonly<T> = {
+  readonly [P in keyof T]: T[P];
+};
+
+// Pick extracts a subset of properties
+type Pick<T, K extends keyof T> = {
+  [P in K]: T[P];
+};
+
+// Record creates a type with known keys and a uniform value type
+type Record<K extends keyof any, T> = {
+  [P in K]: T;
+};
+```
+
+Building your own:
+
+```ts
+// Make some fields required, rest optional
+type WithRequired<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
+
+interface Config {
+  host?: string;
+  port?: number;
+  debug?: boolean;
+}
+
+// host and port are now required
+type ProductionConfig = WithRequired<Config, "host" | "port">;
+```
+
+## Real-World Pattern: Generic Repository
+
+Here's a pattern I use frequently — a generic data-fetching hook:
+
+```ts
+import { useState, useEffect } from "react";
+
+interface FetchState<T> {
+  data: T | null;
+  loading: boolean;
+  error: Error | null;
+}
+
+function useFetch<T>(url: string): FetchState<T> {
+  const [state, setState] = useState<FetchState<T>>({
+    data: null,
+    loading: true,
+    error: null,
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data: T) => {
+        if (!cancelled) {
+          setState({ data, loading: false, error: null });
+        }
+      })
+      .catch((error: Error) => {
+        if (!cancelled) {
+          setState({ data: null, loading: false, error });
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [url]);
+
+  return state;
+}
+
+// Usage — fully typed
+const { data, loading, error } = useFetch<{ id: number; name: string }[]>(
+  "/api/users"
+);
+```
+
+## Default Generic Parameters
+
+You can give type parameters defaults, just like function parameters:
+
+```ts
+interface Container<T = string> {
+  value: T;
+  label: string;
+}
+
+const stringBox: Container = { value: "hello", label: "greeting" };
+const numberBox: Container<number> = { value: 42, label: "count" };
+```
+
+## Conditional Types
+
+For advanced use cases, combine generics with conditional types:
+
+```ts
+type IsArray<T> = T extends any[] ? true : false;
+
+type A = IsArray<string[]>;  // true
+type B = IsArray<string>;    // false
+
+// Extract the element type from an array
+type ElementType<T> = T extends (infer U)[] ? U : never;
+
+type C = ElementType<number[]>;  // number
+type D = ElementType<string[]>;  // string
+```
+
+---
+
+## Key Takeaways
+
+- Use `<T>` to create reusable, type-safe functions and interfaces
+- Use `extends` to constrain what `T` can be
+- Use `keyof T` and `T[K]` for type-safe property access
+- Build custom utility types using mapped types and generics
+- TypeScript infers generic types — explicit annotation is rarely needed
+
+Generics might look intimidating at first, but they're the backbone of type-safe abstractions. Once they click, you'll use them everywhere.

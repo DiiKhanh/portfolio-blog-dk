@@ -1,0 +1,331 @@
+---
+title: "Building REST APIs with Go"
+description: "A practical guide to building production-ready REST APIs using Go's standard library — routing, JSON handling, middleware, and project structure."
+date: "2026-02-05"
+level: "intermediate"
+tags: ["Go", "API", "Backend", "REST"]
+---
+
+# Building REST APIs with Go
+
+Go's standard library is powerful enough to build production REST APIs without reaching for a heavy framework. This guide walks through everything you need: routing, JSON, middleware, error handling, and project structure.
+
+## Project Structure
+
+Before writing any code, structure matters:
+
+```
+myapi/
+├── cmd/
+│   └── server/
+│       └── main.go       # Entry point
+├── internal/
+│   ├── handler/          # HTTP handlers
+│   ├── middleware/        # HTTP middleware
+│   ├── model/            # Data models
+│   └── service/          # Business logic
+├── go.mod
+└── go.sum
+```
+
+Keeping handlers thin and moving logic to services makes testing easier.
+
+## Setting Up the Server
+
+```go
+package main
+
+import (
+    "log"
+    "net/http"
+    "time"
+)
+
+func main() {
+    mux := http.NewServeMux()
+
+    // Register routes
+    mux.HandleFunc("GET /api/users", listUsers)
+    mux.HandleFunc("POST /api/users", createUser)
+    mux.HandleFunc("GET /api/users/{id}", getUser)
+    mux.HandleFunc("PUT /api/users/{id}", updateUser)
+    mux.HandleFunc("DELETE /api/users/{id}", deleteUser)
+
+    srv := &http.Server{
+        Addr:         ":8080",
+        Handler:      mux,
+        ReadTimeout:  10 * time.Second,
+        WriteTimeout: 30 * time.Second,
+        IdleTimeout:  120 * time.Second,
+    }
+
+    log.Println("Server listening on :8080")
+    if err := srv.ListenAndServe(); err != nil {
+        log.Fatal(err)
+    }
+}
+```
+
+> Go 1.22+ supports method-prefixed routing (`GET /path`) and path parameters (`{id}`) natively in `http.NewServeMux()` — no external router needed for most APIs.
+
+## JSON Encoding and Decoding
+
+Create helper functions so you're not repeating `json.NewDecoder` everywhere:
+
+```go
+package handler
+
+import (
+    "encoding/json"
+    "net/http"
+)
+
+func writeJSON(w http.ResponseWriter, status int, v any) {
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(status)
+    if err := json.NewEncoder(w).Encode(v); err != nil {
+        // Log but don't write again — headers are already sent
+        log.Printf("writeJSON encode error: %v", err)
+    }
+}
+
+func readJSON(r *http.Request, v any) error {
+    const maxBytes = 1_048_576 // 1 MB
+    r.Body = http.MaxBytesReader(nil, r.Body, maxBytes)
+    dec := json.NewDecoder(r.Body)
+    dec.DisallowUnknownFields() // strict mode
+    return dec.Decode(v)
+}
+```
+
+## Defining Models
+
+```go
+package model
+
+import "time"
+
+type User struct {
+    ID        int64     `json:"id"`
+    Name      string    `json:"name"`
+    Email     string    `json:"email"`
+    CreatedAt time.Time `json:"created_at"`
+}
+
+type CreateUserRequest struct {
+    Name  string `json:"name"`
+    Email string `json:"email"`
+}
+```
+
+## Writing Handlers
+
+```go
+package handler
+
+import (
+    "net/http"
+    "strconv"
+
+    "myapi/internal/model"
+    "myapi/internal/service"
+)
+
+type UserHandler struct {
+    svc *service.UserService
+}
+
+func NewUserHandler(svc *service.UserService) *UserHandler {
+    return &UserHandler{svc: svc}
+}
+
+func (h *UserHandler) List(w http.ResponseWriter, r *http.Request) {
+    users, err := h.svc.ListUsers(r.Context())
+    if err != nil {
+        writeError(w, http.StatusInternalServerError, "failed to list users")
+        return
+    }
+    writeJSON(w, http.StatusOK, users)
+}
+
+func (h *UserHandler) Create(w http.ResponseWriter, r *http.Request) {
+    var req model.CreateUserRequest
+    if err := readJSON(r, &req); err != nil {
+        writeError(w, http.StatusBadRequest, "invalid request body")
+        return
+    }
+
+    // Validate
+    if req.Name == "" || req.Email == "" {
+        writeError(w, http.StatusBadRequest, "name and email are required")
+        return
+    }
+
+    user, err := h.svc.CreateUser(r.Context(), req)
+    if err != nil {
+        writeError(w, http.StatusInternalServerError, "failed to create user")
+        return
+    }
+
+    writeJSON(w, http.StatusCreated, user)
+}
+
+func (h *UserHandler) Get(w http.ResponseWriter, r *http.Request) {
+    id, err := strconv.ParseInt(r.PathValue("id"), 10, 64)
+    if err != nil {
+        writeError(w, http.StatusBadRequest, "invalid id")
+        return
+    }
+
+    user, err := h.svc.GetUser(r.Context(), id)
+    if err != nil {
+        writeError(w, http.StatusNotFound, "user not found")
+        return
+    }
+
+    writeJSON(w, http.StatusOK, user)
+}
+```
+
+## Middleware
+
+Middleware in Go is just a function that wraps an `http.Handler`:
+
+```go
+package middleware
+
+import (
+    "log"
+    "net/http"
+    "time"
+)
+
+// Logger logs method, path, and duration
+func Logger(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        start := time.Now()
+        next.ServeHTTP(w, r)
+        log.Printf("%s %s %s", r.Method, r.URL.Path, time.Since(start))
+    })
+}
+
+// CORS adds permissive CORS headers (tune for production)
+func CORS(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        w.Header().Set("Access-Control-Allow-Origin", "*")
+        w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+        w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+        if r.Method == http.MethodOptions {
+            w.WriteHeader(http.StatusNoContent)
+            return
+        }
+
+        next.ServeHTTP(w, r)
+    })
+}
+
+// Chain applies middleware in order (first = outermost)
+func Chain(h http.Handler, middlewares ...func(http.Handler) http.Handler) http.Handler {
+    for i := len(middlewares) - 1; i >= 0; i-- {
+        h = middlewares[i](h)
+    }
+    return h
+}
+```
+
+Applying middleware:
+
+```go
+handler := Chain(mux,
+    middleware.Logger,
+    middleware.CORS,
+)
+
+srv := &http.Server{
+    Addr:    ":8080",
+    Handler: handler,
+}
+```
+
+## Consistent Error Responses
+
+Define a standard error response so clients always get the same shape:
+
+```go
+type ErrorResponse struct {
+    Code    string `json:"code"`
+    Message string `json:"message"`
+}
+
+func writeError(w http.ResponseWriter, status int, message string) {
+    code := http.StatusText(status)
+    writeJSON(w, status, ErrorResponse{
+        Code:    strings.ToUpper(strings.ReplaceAll(code, " ", "_")),
+        Message: message,
+    })
+}
+
+// Example response body:
+// {"code":"NOT_FOUND","message":"user not found"}
+```
+
+## Context for Cancellation
+
+Always propagate `context.Context` through the call stack:
+
+```go
+func (s *UserService) GetUser(ctx context.Context, id int64) (*model.User, error) {
+    // Pass ctx to DB query so it cancels if client disconnects
+    row := s.db.QueryRowContext(ctx, "SELECT id, name, email FROM users WHERE id = $1", id)
+
+    var u model.User
+    if err := row.Scan(&u.ID, &u.Name, &u.Email); err != nil {
+        return nil, fmt.Errorf("query user %d: %w", id, err)
+    }
+
+    return &u, nil
+}
+```
+
+When the HTTP request is cancelled (client closes connection), the `ctx` is cancelled and `QueryRowContext` returns immediately — no wasted database resources.
+
+## Graceful Shutdown
+
+Handle SIGINT/SIGTERM so in-flight requests complete:
+
+```go
+srv := &http.Server{Addr: ":8080", Handler: handler}
+
+go func() {
+    if err := srv.ListenAndServe(); err != http.ErrServerClosed {
+        log.Fatal(err)
+    }
+}()
+
+// Wait for interrupt signal
+quit := make(chan os.Signal, 1)
+signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+<-quit
+
+ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+defer cancel()
+
+if err := srv.Shutdown(ctx); err != nil {
+    log.Fatal("server forced to shutdown:", err)
+}
+log.Println("server exiting")
+```
+
+---
+
+## Key Takeaways
+
+- Go 1.22's `http.NewServeMux` supports method routing and path parameters without external deps
+- Keep handlers thin — business logic goes in services
+- Helper functions (`writeJSON`, `readJSON`, `writeError`) eliminate repetition
+- Middleware is just `func(http.Handler) http.Handler` — compose them with `Chain`
+- Always propagate `context.Context` for proper cancellation
+- Implement graceful shutdown for zero-downtime deployments
+
+Go's standard library is surprisingly capable. Reach for external routers only when you genuinely need features beyond what `net/http` offers.
