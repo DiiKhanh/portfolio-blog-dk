@@ -36,18 +36,18 @@ export function BlogFilter({ allTags, selectedCategory, selectedTag }: BlogFilte
     );
 
     return (
-        <div className="space-y-4">
-            {/* Category filter */}
-            <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-3 overflow-x-auto scrollbar-none pb-0.5">
+            {/* Category pills */}
+            <div className="flex items-center gap-1.5 shrink-0">
                 {CATEGORIES.map((cat) => (
                     <button
                         key={cat.value}
                         onClick={() => updateFilter("category", cat.value)}
                         className={`
-                            px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 border
+                            px-3.5 py-1 rounded-full text-sm font-medium transition-all duration-200 border whitespace-nowrap cursor-pointer
                             ${
                                 selectedCategory === cat.value
-                                    ? "bg-primary text-background border-primary shadow-[0_0_12px_var(--color-primary)]"
+                                    ? "bg-primary text-background border-primary"
                                     : "border-glass-border text-foreground-muted hover:border-primary/50 hover:text-foreground"
                             }
                         `}
@@ -57,12 +57,14 @@ export function BlogFilter({ allTags, selectedCategory, selectedTag }: BlogFilte
                 ))}
             </div>
 
-            {/* Tag filter */}
+            {/* Divider */}
             {allTags.length > 0 && (
-                <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs text-foreground-muted uppercase tracking-wider font-medium">
-                        Tags:
-                    </span>
+                <span className="w-px h-4 bg-glass-border shrink-0" aria-hidden="true" />
+            )}
+
+            {/* Tag pills — horizontal scroll */}
+            {allTags.length > 0 && (
+                <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
                     {allTags.map((tag) => (
                         <button
                             key={tag}
@@ -70,11 +72,11 @@ export function BlogFilter({ allTags, selectedCategory, selectedTag }: BlogFilte
                                 updateFilter("tag", selectedTag === tag ? "" : tag)
                             }
                             className={`
-                                clay-badge text-xs px-3 py-1 transition-all duration-200
+                                clay-badge text-xs px-2.5 py-1 transition-all duration-200 whitespace-nowrap cursor-pointer shrink-0
                                 ${
                                     selectedTag === tag
-                                        ? "ring-2 ring-primary/60 text-primary"
-                                        : "opacity-70 hover:opacity-100"
+                                        ? "ring-1 ring-primary/60 text-primary opacity-100"
+                                        : "opacity-60 hover:opacity-100"
                                 }
                             `}
                         >

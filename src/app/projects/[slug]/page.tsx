@@ -1,15 +1,50 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, Github, CheckCircle2 } from "lucide-react";
 
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { ProCard } from "@/components/ui/pro-card";
 import { ClayBadge } from "@/components/ui/clay-badge";
+import { ProjectIllustration } from "@/components/ui/project-illustration";
 import { getProjectBySlug, projects } from "@/lib/projects";
 
 const SITE_URL = "https://portfolio-blog-dk.vercel.app";
+
+function IconArrowLeft() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M19 12H5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M12 19L5 12L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function IconExternalLink() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18 13V19C18 20.1046 17.1046 21 16 21H5C3.89543 21 3 20.1046 3 19V8C3 6.89543 3.89543 6 5 6H11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M15 3H21V9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10 14L21 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function IconGithub() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2C6.477 2 2 6.477 2 12C2 16.418 4.865 20.166 8.839 21.489C9.339 21.581 9.521 21.271 9.521 21.003C9.521 20.763 9.513 20.07 9.508 19.163C6.726 19.773 6.139 17.77 6.139 17.77C5.685 16.606 5.029 16.297 5.029 16.297C4.121 15.67 5.098 15.682 5.098 15.682C6.101 15.752 6.629 16.722 6.629 16.722C7.521 18.253 8.97 17.811 9.539 17.553C9.631 16.862 9.889 16.401 10.175 16.139C7.955 15.875 5.62 14.989 5.62 11.154C5.62 10.046 6.01 9.139 6.649 8.43C6.546 8.165 6.202 7.134 6.747 5.737C6.747 5.737 7.587 5.455 9.497 6.773C10.31 6.539 11.16 6.422 12.005 6.418C12.85 6.422 13.7 6.539 14.515 6.773C16.423 5.455 17.261 5.737 17.261 5.737C17.808 7.134 17.464 8.165 17.361 8.43C18.002 9.139 18.388 10.046 18.388 11.154C18.388 14.999 16.049 15.872 13.822 16.131C14.175 16.444 14.495 17.063 14.495 18.004C14.495 19.351 14.483 20.436 14.483 21.003C14.483 21.274 14.662 21.586 15.171 21.487C19.141 20.162 22.003 16.416 22.003 12C22.003 6.477 17.525 2 12 2Z" fill="currentColor" />
+    </svg>
+  );
+}
+
+function IconCheckCircle() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+      <path d="M8 12L11 15L16 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 type ProjectPageProps = {
   params: Promise<{
@@ -78,52 +113,51 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
       <AnimatedSection className="section pt-32 pb-24">
         <div className="max-w-5xl lg:max-w-6xl mx-auto">
           {/* Back link */}
-          <div className="mb-6">
+          <div className="mb-8">
             <Link
               href="/#projects"
-              className="inline-flex items-center gap-2 text-xs md:text-sm text-foreground-muted hover:text-foreground transition-colors cursor-pointer"
+              className="inline-flex items-center gap-2 text-sm text-foreground-muted hover:text-foreground transition-colors cursor-pointer"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <IconArrowLeft />
               Back to projects
             </Link>
           </div>
 
           <div className="space-y-10 lg:space-y-12">
-            {/* Hero: title + meta + preview */}
-            <ProCard className="p-6 md:p-8 lg:p-10 overflow-hidden">
-              <div className="grid gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:items-center">
-                <div className="space-y-5">
+            {/* Hero: Showcase Illustration */}
+            <ProCard className="p-0 overflow-hidden">
+              <div className="grid gap-0 lg:grid-cols-[1fr_minmax(0,1.1fr)]">
+                {/* Content side */}
+                <div className="flex flex-col justify-center p-6 md:p-8 lg:p-10 order-2 lg:order-1">
                   {project.tag && (
-                    <ClayBadge className="inline-flex px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] bg-primary/5 text-primary">
+                    <ClayBadge className="inline-flex self-start px-3 py-1 mb-5 text-[11px] font-semibold uppercase tracking-[0.18em] bg-primary/5 text-primary">
                       {project.tag}
                     </ClayBadge>
                   )}
 
-                  <div className="space-y-3">
-                    <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
-                      {project.title}
-                    </h1>
+                  <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-4">
+                    {project.title}
+                  </h1>
 
-                    <div className="flex flex-wrap items-center gap-3 text-sm text-foreground-muted">
-                      {project.role && (
-                        <span className="inline-flex items-center rounded-full bg-secondary/10 px-3 py-1">
-                          {project.role}
-                        </span>
-                      )}
-                      {project.context && (
-                        <span className="text-xs uppercase tracking-[0.18em] text-foreground-muted/70">
-                          {project.context}
-                        </span>
-                      )}
-                    </div>
+                  <div className="flex flex-wrap items-center gap-3 text-sm text-foreground-muted mb-5">
+                    {project.role && (
+                      <span className="inline-flex items-center rounded-full bg-secondary/10 px-3 py-1">
+                        {project.role}
+                      </span>
+                    )}
+                    {project.context && (
+                      <span className="text-xs uppercase tracking-[0.18em] text-foreground-muted/70">
+                        {project.context}
+                      </span>
+                    )}
                   </div>
 
-                  <p className="text-foreground-muted leading-relaxed max-w-xl">
+                  <p className="text-foreground-muted leading-relaxed max-w-xl mb-6">
                     {project.description}
                   </p>
 
                   {(project.github || project.demo) && (
-                    <div className="flex flex-wrap items-center gap-3 pt-2">
+                    <div className="flex flex-wrap items-center gap-3">
                       {project.demo && (
                         <Link
                           href={project.demo}
@@ -131,7 +165,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                           rel="noopener noreferrer"
                           className="btn-primary inline-flex items-center gap-2 text-sm cursor-pointer"
                         >
-                          <ExternalLink className="w-4 h-4" />
+                          <IconExternalLink />
                           <span>View live demo</span>
                         </Link>
                       )}
@@ -142,7 +176,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-2 text-sm text-foreground hover:text-primary transition-colors cursor-pointer"
                         >
-                          <Github className="w-4 h-4" />
+                          <IconGithub />
                           <span>View code</span>
                         </Link>
                       )}
@@ -150,15 +184,11 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                   )}
                 </div>
 
-                <div className="relative h-52 md:h-64 lg:h-72 rounded-2xl overflow-hidden bg-secondary/10">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 pointer-events-none" />
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover"
-                    sizes="(min-width: 1024px) 480px, 100vw"
-                    priority
+                {/* Illustration side */}
+                <div className="relative overflow-hidden order-1 lg:order-2 min-h-[220px] lg:min-h-[360px]">
+                  <ProjectIllustration
+                    slug={project.slug}
+                    className="w-full h-full"
                   />
                 </div>
               </div>
@@ -189,7 +219,9 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                             key={item}
                             className="flex items-start gap-2.5 text-sm text-foreground-muted leading-snug"
                           >
-                            <CheckCircle2 className="mt-[2px] w-4 h-4 text-primary shrink-0" />
+                            <span className="mt-[2px] text-primary shrink-0">
+                              <IconCheckCircle />
+                            </span>
                             <span>{item}</span>
                           </li>
                         ))}
@@ -264,7 +296,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-2 text-sm text-foreground-muted hover:text-foreground transition-colors cursor-pointer"
                         >
-                          <Github className="w-4 h-4" />
+                          <IconGithub />
                           <span>View code on GitHub</span>
                         </Link>
                       )}
@@ -275,7 +307,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-2 text-sm text-foreground-muted hover:text-primary transition-colors cursor-pointer"
                         >
-                          <ExternalLink className="w-4 h-4" />
+                          <IconExternalLink />
                           <span>View live demo</span>
                         </Link>
                       )}
@@ -290,4 +322,3 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
     </main>
   );
 }
-

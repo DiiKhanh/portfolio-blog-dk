@@ -593,6 +593,14 @@ body {
 }
 
 /* Scrollbar styling for sidebar */
+.scrollbar-none {
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 .scrollbar-thin::-webkit-scrollbar {
   width: 6px;
 }
@@ -635,35 +643,33 @@ body {
   background: #0D1117;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.5);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .code-terminal:hover {
-  transform: scale(1.02);
-  box-shadow: 0 12px 48px -12px rgba(0, 217, 255, 0.3);
-  border-color: rgba(0, 217, 255, 0.3);
+  box-shadow: 0 12px 48px -12px rgba(0, 217, 255, 0.15);
+  border-color: rgba(0, 217, 255, 0.2);
 }
 
 .terminal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
+  padding: 10px 16px;
   background: #161B22;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .terminal-dots {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .terminal-dots .dot {
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
 }
 
@@ -680,7 +686,7 @@ body {
 }
 
 .terminal-content {
-  padding: 16px;
+  padding: 20px 20px;
   overflow-x: auto;
 }
 
@@ -690,11 +696,47 @@ body {
   background: transparent;
 }
 
-.terminal-content code {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  line-height: 1.6;
+/* ============================================
+   SUGAR-HIGH SYNTAX TOKENS
+   sugar-high uses inline style="color: var(--sh-*)"
+   Define CSS variables here — VS Code Dark+ palette
+   ============================================ */
+
+:root {
+  --sh-keyword:     #FF7B72;   /* keywords: const, let, type, interface, func */
+  --sh-string:      #A5D6FF;   /* strings */
+  --sh-number:      #79C0FF;   /* numbers */
+  --sh-comment:     #8B949E;   /* comments */
+  --sh-class:       #FFA657;   /* class / type names */
+  --sh-identifier:  #E6EDF3;   /* identifiers */
+  --sh-sign:        #79C0FF;   /* operators: =, =>, :, {, } */
+  --sh-property:    #79C0FF;   /* properties */
+  --sh-entity:      #D2A8FF;   /* function names */
+  --sh-jsxliterals: #7EE787;   /* JSX / template literals */
+}
+
+.sh-code {
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, "Courier New", monospace;
+  font-size: 0.875rem;
+  line-height: 1.7;
   color: #E6EDF3;
+  display: block;
+}
+
+/* Ensure comment spans render italic */
+.sh-code .sh__token--comment {
+  font-style: italic;
+}
+
+.terminal-content code,
+.prose-blog .terminal-content code {
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: #E6EDF3;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 .copy-button {
@@ -846,15 +888,21 @@ body {
    PROSE STYLES (MDX Content)
    ============================================ */
 
+/* ============================================
+   PROSE (Article reading styles)
+   ============================================ */
+
 .prose-blog {
   color: var(--foreground);
   max-width: none;
+  font-size: 1.0625rem;
+  line-height: 1.85;
 }
 
 /* Typography */
 .prose-blog p {
-  margin-bottom: 1.5em;
-  line-height: 1.8;
+  margin-bottom: 1.6em;
+  line-height: 1.85;
   color: var(--foreground-muted);
 }
 
@@ -865,31 +913,34 @@ body {
 /* Headings */
 .prose-blog h2 {
   font-family: var(--font-heading);
-  font-size: 2rem;
+  font-size: 1.625rem;
   font-weight: 700;
-  margin-top: 2.5em;
-  margin-bottom: 1em;
+  margin-top: 2.75em;
+  margin-bottom: 0.75em;
   color: var(--foreground);
   letter-spacing: -0.02em;
   line-height: 1.3;
+  scroll-margin-top: 6rem;
 }
 
 .prose-blog h3 {
   font-family: var(--font-heading);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
   margin-top: 2em;
-  margin-bottom: 0.75em;
+  margin-bottom: 0.6em;
   color: var(--foreground);
   letter-spacing: -0.01em;
+  scroll-margin-top: 6rem;
 }
 
 .prose-blog h4 {
-  font-size: 1.25rem;
+  font-size: 1.0625rem;
   font-weight: 600;
   margin-top: 1.75em;
   margin-bottom: 0.5em;
   color: var(--foreground);
+  scroll-margin-top: 6rem;
 }
 
 /* Links */
@@ -897,8 +948,8 @@ body {
   color: var(--primary);
   text-decoration: underline;
   text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-  transition: all 0.2s ease;
+  text-underline-offset: 3px;
+  transition: all 0.15s ease;
 }
 
 .prose-blog a:hover {
@@ -910,12 +961,12 @@ body {
 .prose-blog ul,
 .prose-blog ol {
   margin: 1.5em 0;
-  padding-left: 1.75em;
+  padding-left: 1.5em;
 }
 
 .prose-blog li {
-  margin-bottom: 0.5em;
-  line-height: 1.7;
+  margin-bottom: 0.4em;
+  line-height: 1.75;
   color: var(--foreground-muted);
 }
 
@@ -926,15 +977,17 @@ body {
 /* Code */
 .prose-blog code {
   font-family: var(--font-mono);
-  font-size: 0.9em;
-  padding: 0.2em 0.4em;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  font-size: 0.875em;
+  padding: 0.15em 0.45em;
+  background: rgba(0, 217, 255, 0.08);
+  border: 1px solid rgba(0, 217, 255, 0.12);
+  border-radius: 5px;
   color: var(--primary);
 }
 
 .light .prose-blog code {
-  background: rgba(0, 0, 0, 0.06);
+  background: rgba(14, 165, 233, 0.08);
+  border-color: rgba(14, 165, 233, 0.15);
 }
 
 .prose-blog pre {
@@ -944,6 +997,7 @@ body {
 
 .prose-blog pre code {
   background: transparent;
+  border: none;
   padding: 0;
   font-size: 0.875em;
 }
@@ -951,10 +1005,16 @@ body {
 /* Blockquotes */
 .prose-blog blockquote {
   margin: 2em 0;
-  padding-left: 1.5em;
+  padding: 1em 1.5em;
   border-left: 3px solid var(--primary);
+  background: rgba(0, 217, 255, 0.04);
+  border-radius: 0 8px 8px 0;
   font-style: italic;
   color: var(--foreground-muted);
+}
+
+.light .prose-blog blockquote {
+  background: rgba(14, 165, 233, 0.04);
 }
 
 /* Horizontal Rule */
@@ -970,6 +1030,7 @@ body {
   border-radius: 12px;
   max-width: 100%;
   height: auto;
+  border: 1px solid var(--glass-border);
 }
 
 /* Strong/Bold */

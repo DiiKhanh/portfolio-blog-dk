@@ -14,8 +14,8 @@ function slugifyHeading(text: string): string {
 function createHeading(level: 1 | 2 | 3 | 4 | 5 | 6) {
   const tag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   const classNames: Record<number, string> = {
-    1: "brutalist-heading",
-    2: "text-3xl font-heading font-bold mt-12 mb-4 text-foreground",
+    1: "hidden",
+    2: "text-2xl font-heading font-bold mt-12 mb-4 text-foreground tracking-tight",
     3: "text-2xl font-heading font-semibold mt-8 mb-3 text-foreground",
     4: "text-xl font-heading font-semibold mt-6 mb-2 text-foreground",
     5: "text-lg font-heading font-medium mt-4 mb-2 text-foreground",
@@ -101,16 +101,16 @@ function InlineCode({ children }: { children: ReactNode }) {
 
 // Pre/Code block wrapper
 interface PreProps extends ComponentProps<"pre"> {
-  children?: React.ReactElement<{ children?: string; className?: string }>;
+  children?: React.ReactElement<{ children?: string; className?: string; "data-filename"?: string }>;
 }
 
 function Pre({ children }: PreProps) {
-  // Extract text content and language from children
   const code = children?.props?.children || "";
   const className = children?.props?.className || "";
   const language = className.replace("language-", "") || "plaintext";
+  const filename = children?.props?.["data-filename"];
 
-  return <CodeBlock language={language}>{code}</CodeBlock>;
+  return <CodeBlock language={language} filename={filename}>{code}</CodeBlock>;
 }
 
 // Horizontal rule

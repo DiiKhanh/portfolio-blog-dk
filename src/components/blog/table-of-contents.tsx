@@ -51,22 +51,22 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
     return (
         <nav
             aria-label="Table of contents"
-            className="hidden xl:block sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto w-56 shrink-0"
+            className="hidden xl:block sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto w-64 shrink-0"
         >
-            <p className="text-xs font-heading font-semibold uppercase tracking-widest text-foreground-muted mb-4">
+            <p className="text-[11px] font-heading font-semibold uppercase tracking-widest text-foreground-muted mb-4">
                 On this page
             </p>
-            <ul className="space-y-1">
+            <ul className="space-y-0.5">
                 {headings.map((heading) => (
                     <li key={heading.id} className={heading.level === 3 ? "pl-3" : ""}>
                         <a
                             href={`#${heading.id}`}
                             className={`
-                                block text-sm py-1 border-l-2 pl-3 transition-colors duration-150
+                                block text-[13px] leading-snug py-1.5 border-l-2 pl-3 transition-colors duration-150
                                 ${
                                     activeId === heading.id
                                         ? "border-primary text-primary font-medium"
-                                        : "border-transparent text-foreground-muted hover:text-foreground hover:border-foreground-muted"
+                                        : "border-transparent text-foreground-muted hover:text-foreground hover:border-foreground-muted/50"
                                 }
                             `}
                         >

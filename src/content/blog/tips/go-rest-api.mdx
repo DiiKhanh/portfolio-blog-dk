@@ -32,7 +32,7 @@ Keeping handlers thin and moving logic to services makes testing easier.
 
 ## Setting Up the Server
 
-```go
+```go filename="cmd/server/main.go"
 package main
 
 import (
@@ -72,7 +72,7 @@ func main() {
 
 Create helper functions so you're not repeating `json.NewDecoder` everywhere:
 
-```go
+```go filename="internal/handler/helpers.go"
 package handler
 
 import (
@@ -100,7 +100,7 @@ func readJSON(r *http.Request, v any) error {
 
 ## Defining Models
 
-```go
+```go filename="internal/model/user.go"
 package model
 
 import "time"
@@ -120,7 +120,7 @@ type CreateUserRequest struct {
 
 ## Writing Handlers
 
-```go
+```go filename="internal/handler/user.go"
 package handler
 
 import (
@@ -191,7 +191,7 @@ func (h *UserHandler) Get(w http.ResponseWriter, r *http.Request) {
 
 Middleware in Go is just a function that wraps an `http.Handler`:
 
-```go
+```go filename="internal/middleware/middleware.go"
 package middleware
 
 import (
