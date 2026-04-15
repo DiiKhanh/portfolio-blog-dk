@@ -6,3 +6,8 @@ export { MDXComponents } from "./mdx-component";
 export { BlogFilter } from "./blog-filter";
 export { TableOfContents } from "./table-of-contents";
 export { ReadingProgress } from "./reading-progress";
+export { AuthorBio } from "./author-bio";
+export { RelatedPosts } from "./related-posts";
+export { PostNav } from "./post-nav";
+export { ShareButtons } from "./share-buttons";
+export { BackToTop } from "./back-to-top";

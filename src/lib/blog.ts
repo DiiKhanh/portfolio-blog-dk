@@ -8,10 +8,19 @@ export interface BlogPost {
   title: string;
   description: string;
   date: string;
-  category: "tips" | "courses";
+  category: string;
   level?: "beginner" | "intermediate" | "advanced";
-  tags?: string[];
+  tags: string[];
   readingTime: string;
+  wordCount: number;
+  // Series support
+  series?: string;
+  seriesTitle?: string;
+  seriesOrder?: number;
+  // Flags
+  draft?: boolean;
+  featured?: boolean;
+  // Legacy course support
   course?: string;
   courseChapter?: string;
   content: string;
@@ -68,8 +77,12 @@ export async function getAllPosts(): Promise<BlogPost[]> {
     }
   }
 
+  // Filter drafts in production
+  const isDev = process.env.NODE_ENV === "development";
+  const visible = isDev ? posts : posts.filter((p) => !p.draft);
+
   // Sort by date, newest first
-  return posts.sort(
+  return visible.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
   );
 }
@@ -78,21 +91,18 @@ export async function getPostBySlug(
   slug: string,
   category?: "tips" | "courses",
 ): Promise<BlogPost | null> {
-  let filePath: string = "";
-  let postCategory: "tips" | "courses" = "tips";
+  let filePath = "";
+  let postCategory = "tips";
 
   if (category) {
     filePath = path.join(BLOG_PATH, category, `${slug}.mdx`);
     postCategory = category;
   } else {
-    // Try tips first
     const tipsPath = path.join(BLOG_PATH, "tips", `${slug}.mdx`);
     if (fs.existsSync(tipsPath)) {
       filePath = tipsPath;
       postCategory = "tips";
     } else {
-      // Try courses - convert slug format (course-name-lesson) to path (course-name/lesson)
-      // Try to find the course by matching the beginning of the slug
       const coursesPath = path.join(BLOG_PATH, "courses");
       if (fs.existsSync(coursesPath)) {
         const courses = fs.readdirSync(coursesPath);
@@ -112,7 +122,6 @@ export async function getPostBySlug(
           }
         }
       }
-      // Fallback to direct path in courses folder
       if (!filePath) {
         filePath = path.join(BLOG_PATH, "courses", `${slug}.mdx`);
         postCategory = "courses";
@@ -133,13 +142,54 @@ export async function getPostBySlug(
     title: data.title || "Untitled",
     description: data.description || "",
     date: data.date || new Date().toISOString().split("T")[0],
-    category: postCategory,
+    category: data.category || postCategory,
     level: data.level,
     tags: data.tags || [],
     readingTime: stats.text,
+    wordCount: stats.words,
+    series: data.series,
+    seriesTitle: data.seriesTitle,
+    seriesOrder: data.seriesOrder,
+    draft: data.draft,
+    featured: data.featured,
     course: data.course,
     courseChapter: data.courseChapter,
     content,
+  };
+}
+
+/** Returns posts sharing at least one tag, scored by overlap, excluding self. */
+export function getRelatedPosts(
+  currentSlug: string,
+  currentTags: string[],
+  allPosts: BlogPost[],
+  limit = 3,
+): BlogPost[] {
+  return allPosts
+    .filter((p) => p.slug !== currentSlug)
+    .map((p) => ({
+      post: p,
+      score: p.tags.filter((t) => currentTags.includes(t)).length,
+    }))
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map(({ post }) => post);
+}
+
+/**
+ * Returns the previous (older) and next (newer) posts.
+ * allPosts must be sorted newest-first (default from getAllPosts).
+ */
+export function getAdjacentPosts(
+  slug: string,
+  allPosts: BlogPost[],
+): { prev: BlogPost | null; next: BlogPost | null } {
+  const idx = allPosts.findIndex((p) => p.slug === slug);
+  if (idx === -1) return { prev: null, next: null };
+  return {
+    next: idx > 0 ? allPosts[idx - 1] : null,          // newer
+    prev: idx < allPosts.length - 1 ? allPosts[idx + 1] : null, // older
   };
 }
 

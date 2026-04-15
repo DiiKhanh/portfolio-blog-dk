@@ -894,7 +894,7 @@ body {
 
 .prose-blog {
   color: var(--foreground);
-  max-width: none;
+  max-width: 72ch;
   font-size: 1.0625rem;
   line-height: 1.85;
 }

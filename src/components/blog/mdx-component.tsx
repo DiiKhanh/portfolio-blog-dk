@@ -10,25 +10,39 @@ function slugifyHeading(text: string): string {
     .replace(/\s+/g, "-");
 }
 
-// Custom heading with anchor
+// Custom heading with hover anchor link
 function createHeading(level: 1 | 2 | 3 | 4 | 5 | 6) {
   const tag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   const classNames: Record<number, string> = {
     1: "hidden",
-    2: "text-2xl font-heading font-bold mt-12 mb-4 text-foreground tracking-tight",
-    3: "text-2xl font-heading font-semibold mt-8 mb-3 text-foreground",
-    4: "text-xl font-heading font-semibold mt-6 mb-2 text-foreground",
-    5: "text-lg font-heading font-medium mt-4 mb-2 text-foreground",
-    6: "text-base font-heading font-medium mt-4 mb-2 text-foreground-muted",
+    2: "group font-heading text-2xl font-bold mt-12 mb-4 text-foreground tracking-tight scroll-mt-24",
+    3: "group font-heading text-xl font-semibold mt-8 mb-3 text-foreground scroll-mt-24",
+    4: "font-heading text-lg font-semibold mt-6 mb-2 text-foreground scroll-mt-24",
+    5: "font-heading text-base font-medium mt-4 mb-2 text-foreground scroll-mt-24",
+    6: "font-heading text-base font-medium mt-4 mb-2 text-foreground-muted scroll-mt-24",
   };
 
   return function Heading({ children, ...props }: ComponentProps<"h1">) {
-    const id =
-      level === 2 || level === 3 ? slugifyHeading(String(children)) : undefined;
+    const hasAnchor = level === 2 || level === 3;
+    const id = hasAnchor ? slugifyHeading(String(children)) : undefined;
+
     return createElement(
       tag,
       { id, className: classNames[level], ...props },
       children,
+      hasAnchor && id
+        ? createElement(
+            "a",
+            {
+              href: `#${id}`,
+              className:
+                "ml-2 opacity-0 group-hover:opacity-40 text-primary no-underline transition-opacity duration-150 text-sm font-normal",
+              "aria-label": `Link to section: ${String(children)}`,
+              tabIndex: -1,
+            },
+            "#",
+          )
+        : null,
     );
   };
 }
